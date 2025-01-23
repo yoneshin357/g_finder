@@ -16,7 +16,7 @@ import pydeck as pdk
 #import matplotlib.pyplot as plt
 #import folium
 #from streamlit_folium import st_folium
-import plotly.express as px
+
 try:
     print('doing')
     path = os.path.dirname(os.path.abspath(__file__))+"\\"
