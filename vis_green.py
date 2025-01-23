@@ -27,19 +27,44 @@ print("Hello!!!!")
 print(path)
 
 
+with st.sidebar.form(key="my_form"):
+    uploaded_file = st.file_uploader('ファイルアップロード', type=['csv'])
+    if uploaded_file is not None:
+        st.write('アップロードされたファイル:', uploaded_file.name)
+        content = uploaded_file.read()
+    selectbox_state = st.selectbox("線区", tsusho_choice)
+    selectbox_direction = st.selectbox("走行方向", dir_choice)
+    numberinput_threshold = st.number_input("集計間隔", value=200, min_value=100, max_value=1000, step=1, format="%i")
+    
+    edited_limit = st.data_editor(limit)
+    pressed = st.form_submit_button("Build Map")
 
-# CSVデータを読み込む
-data = pd.DataFrame({
-    'lon': [139.6680925, 139.6679981],
-    'lat': [35.81994659, 35.82010958],
-    'tsusho_cd': [104, 104],
-    'kirotei': [20380, 20400],
-    'value1': [21.61879003, 35.49994678],
-    'value2': [4.323758006, 7.099989356]
-})
-pre = pd.read_csv(path+"pre.csv")
+expander = st.sidebar.expander("Help")
+expander.write(
+    """
+    This app allows users to view migration between states from 2018-2019.
+    Overall US plots all states with substantial migration-based relationships with other states.
+    Any other option plots only migration from or to a given state. This map will be updated
+    to show migration between 2019 and 2020 once new census data comes out.
+    ...
+    """
+)
+
+st.write(
+    """
+    # 🌳Green Finder App🌳
+    """
+)
+    
+st.success(
+    """
+    限界支障箇所を可視化します
+    """,
+    icon="🌳"
+)
+
+
 kilo = pd.read_excel("C:/Users/yone/Documents/basic_DB/mars_kilo/地図情報基盤システムキロ標データ.xlsx")
-
 data = pd.read_excel(path+"karasuyama.xlsx")
 print("行、列=",data.shape)
 
@@ -85,41 +110,6 @@ tsusho_choice = data['通称線'].unique()
 dir_choice = data['走行方向'].unique()
 date_choice = data['date'].unique()
 
-with st.sidebar.form(key="my_form"):
-    uploaded_file = st.file_uploader('ファイルアップロード', type=['csv'])
-    if uploaded_file is not None:
-        st.write('アップロードされたファイル:', uploaded_file.name)
-        content = uploaded_file.read()
-    selectbox_state = st.selectbox("線区", tsusho_choice)
-    selectbox_direction = st.selectbox("走行方向", dir_choice)
-    numberinput_threshold = st.number_input("集計間隔", value=200, min_value=100, max_value=1000, step=1, format="%i")
-    
-    edited_limit = st.data_editor(limit)
-    pressed = st.form_submit_button("Build Map")
-
-expander = st.sidebar.expander("Help")
-expander.write(
-    """
-    This app allows users to view migration between states from 2018-2019.
-    Overall US plots all states with substantial migration-based relationships with other states.
-    Any other option plots only migration from or to a given state. This map will be updated
-    to show migration between 2019 and 2020 once new census data comes out.
-    ...
-    """
-)
-
-st.write(
-    """
-    # 🌳Green Finder App🌳
-    """
-)
-    
-st.success(
-    """
-    限界支障箇所を可視化します
-    """,
-    icon="🌳"
-)
 
 
 options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
