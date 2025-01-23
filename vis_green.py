@@ -11,7 +11,7 @@ import pandas as pd
 import time
 import streamlit as st
 import os
-import leafmap.foliumap as leafmap
+
 import pydeck as pdk
 #import matplotlib.pyplot as plt
 #import folium
