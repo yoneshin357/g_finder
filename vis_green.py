@@ -27,28 +27,7 @@ print("Hello!!!!")
 print(path)
 st.write(path)
 
-with st.sidebar.form(key="my_form"):
-    uploaded_file = st.file_uploader('ファイルアップロード', type=['csv'])
-    if uploaded_file is not None:
-        st.write('アップロードされたファイル:', uploaded_file.name)
-        content = uploaded_file.read()
-    selectbox_state = st.selectbox("線区", tsusho_choice)
-    selectbox_direction = st.selectbox("走行方向", dir_choice)
-    numberinput_threshold = st.number_input("集計間隔", value=200, min_value=100, max_value=1000, step=1, format="%i")
-    
-    edited_limit = st.data_editor(limit)
-    pressed = st.form_submit_button("Build Map")
 
-expander = st.sidebar.expander("Help")
-expander.write(
-    """
-    This app allows users to view migration between states from 2018-2019.
-    Overall US plots all states with substantial migration-based relationships with other states.
-    Any other option plots only migration from or to a given state. This map will be updated
-    to show migration between 2019 and 2020 once new census data comes out.
-    ...
-    """
-)
 
 st.write(
     """
@@ -64,7 +43,7 @@ st.success(
 )
 
 
-kilo = pd.read_excel("C:/Users/yone/Documents/basic_DB/mars_kilo/地図情報基盤システムキロ標データ.xlsx")
+#kilo = pd.read_excel("C:/Users/yone/Documents/basic_DB/mars_kilo/地図情報基盤システムキロ標データ.xlsx")
 data = pd.read_excel(path+"karasuyama.xlsx")
 print("行、列=",data.shape)
 
@@ -111,7 +90,28 @@ dir_choice = data['走行方向'].unique()
 date_choice = data['date'].unique()
 
 
+with st.sidebar.form(key="my_form"):
+    uploaded_file = st.file_uploader('ファイルアップロード', type=['csv'])
+    if uploaded_file is not None:
+        st.write('アップロードされたファイル:', uploaded_file.name)
+        content = uploaded_file.read()
+    selectbox_state = st.selectbox("線区", tsusho_choice)
+    selectbox_direction = st.selectbox("走行方向", dir_choice)
+    numberinput_threshold = st.number_input("集計間隔", value=200, min_value=100, max_value=1000, step=1, format="%i")
+    
+    edited_limit = st.data_editor(limit)
+    pressed = st.form_submit_button("Build Map")
 
+expander = st.sidebar.expander("Help")
+expander.write(
+    """
+    This app allows users to view migration between states from 2018-2019.
+    Overall US plots all states with substantial migration-based relationships with other states.
+    Any other option plots only migration from or to a given state. This map will be updated
+    to show migration between 2019 and 2020 once new census data comes out.
+    ...
+    """
+)
 options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
 selection = st.pills("支障位置", options, selection_mode="multi")
 st.markdown(f"Your selected options: {selection}.")
