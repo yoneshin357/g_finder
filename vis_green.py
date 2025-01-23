@@ -44,7 +44,7 @@ st.success(
 
 
 #kilo = pd.read_excel("C:/Users/yone/Documents/basic_DB/mars_kilo/地図情報基盤システムキロ標データ.xlsx")
-data = pd.read_excel(path+"karasuyama.xlsx")
+data = pd.read_excel("/mount/src/g_finder/karasuyama.xlsx")
 print("行、列=",data.shape)
 
 # Streamlitアプリの設定
