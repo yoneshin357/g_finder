@@ -25,7 +25,7 @@ except:
     path = os.getcwd()+"\\"
 print("Hello!!!!")
 print(path)
-expander.write(path)
+st.write(path)
 
 with st.sidebar.form(key="my_form"):
     uploaded_file = st.file_uploader('ファイルアップロード', type=['csv'])
