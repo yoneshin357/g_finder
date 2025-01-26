@@ -28,7 +28,7 @@ print(path)
 
 
 #path = 'C:/Users/yone/Documents/PythonScripts/g_finder/'
-path = 'https://raw.githubusercontent.com/yoneshin357/g_finder/refs/heads/main/'
+path = 'https://github.com/yoneshin357/g_finder/blob/main/'
 
 地図情報基盤システムキロ標データ.csv
 # CSVデータを読み込む
