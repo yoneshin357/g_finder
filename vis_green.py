@@ -13,7 +13,7 @@ import streamlit as st
 import os
 #import leafmap.foliumap as leafmap
 import pydeck as pdk
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 #import folium
 #from streamlit_folium import st_folium
 #import plotly.express as px
