@@ -34,10 +34,10 @@ path = 'https://github.com/yoneshin357/g_finder/raw/refs/heads/main/'
 # CSVデータを読み込む
 
 #kilo = pd.read_excel("C:/Users/yone/Documents/basic_DB/mars_kilo/地図情報基盤システムキロ標データ.xlsx")
-kilo = pd.read_csv(path+"地図情報基盤システムキロ標データ.csv",encoding='cp932')
+kilo = pd.read_csv(path+"地図情報基盤システムキロ標データ.csv")
 #data = pd.read_excel(path+"karasuyama.xlsx")
-data = pd.read_csv(path+"karasuyama.csv",encoding='cp932')
-
+data = pd.read_csv(path+"karasuyama.csv"')
+#,encoding='cp932
 print("行、列=",data.shape)
 
 # Streamlitアプリの設定
