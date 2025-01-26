@@ -43,6 +43,7 @@ data = pd.read_csv(path+"karasuyama.csv", encoding="shift_jis")
 
 print("行、列=",data.shape)
 
+
 # Streamlitアプリの設定
 st.set_page_config(page_title="G-Finder", 
                    layout="wide", page_icon="🌳",
@@ -93,9 +94,9 @@ with st.sidebar.form(key="my_form"):
     selectbox_state = st.selectbox("線区", tsusho_choice)
     selectbox_direction = st.selectbox("走行方向", dir_choice)
     numberinput_threshold = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=1000, step=1, format="%i")
-    
+    st.write('支障カウント閾値')
     edited_limit = st.data_editor(limit_dmy)
-    pressed = st.form_submit_button("Build Map")
+    pressed = st.form_submit_button("マップ更新")
 
 expander = st.sidebar.expander("Help")
 expander.write(
@@ -110,7 +111,7 @@ expander.write(
 
 st.write(
     """
-    # 🌳Green Finder App🌳
+    # 🌳🍃Green Finder App🍃🌳
     """
 )
     
@@ -141,7 +142,7 @@ tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 
 
 tooltip = {
-    "html": "通称線{通称線}<br>集計キロ程{集計キロ程}<br>{judge}",
+    "html": "通称線{通称線}<br>集計キロ程{集計キロ程}<br>支障数{judge}",
     "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
 }
 
@@ -173,6 +174,9 @@ st.pydeck_chart(
         ],
     )
 )
+
+
+st.bar_chart(tmp2['judge'])
 
 
 st.bar_chart(tmp2['judge'])
