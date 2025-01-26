@@ -38,6 +38,9 @@ kilo = pd.read_csv(path+"tizukiro.csv", encoding="shift_jis")
 #data = pd.read_excel(path+"karasuyama.xlsx")
 data = pd.read_csv(path+"karasuyama.csv", encoding="shift_jis")
 #,encoding='cp932
+
+
+
 print("行、列=",data.shape)
 
 # Streamlitアプリの設定
@@ -49,6 +52,7 @@ st.write("path="+str(path))
 limit_dmy =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
 limit =  pd.DataFrame({"閾値": pd.Series([0, 0, 0, 0, 0])})
 limit.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+limit_dmy.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
 limit_dict = limit.to_dict(orient='dict')['閾値']
 
 data['lim'] = data['支障位置'].map(limit_dict)
@@ -81,6 +85,7 @@ dir_choice = data['走行方向'].unique()
 date_choice = data['date'].unique()
 
 with st.sidebar.form(key="my_form"):
+    st.write('データインポート')
     uploaded_file = st.file_uploader('ファイルアップロード', type=['csv'])
     if uploaded_file is not None:
         st.write('アップロードされたファイル:', uploaded_file.name)
@@ -142,7 +147,7 @@ tooltip = {
 
 st.pydeck_chart(
     pdk.Deck(
-        map_style='dark',
+        map_style=None,
         tooltip=tooltip,
         initial_view_state=pdk.ViewState(
             latitude=36.63,
@@ -171,10 +176,3 @@ st.pydeck_chart(
 
 
 st.bar_chart(tmp2['judge'])
-#
-
-#data = pd.read_csv("C:/Users/yone/Documents/PythonScripts/g_finder/sample.csv")
-
-#st.dataframe(data_calc2.style.highlight_max(axis=0))
-    #Test
-#!streamlit run C:\Users\yone\Documents\PythonScripts\g_finder\vis_green.py
