@@ -34,7 +34,7 @@ path= ''
 # CSVデータを読み込む
 
 #kilo = pd.read_excel("C:/Users/yone/Documents/basic_DB/mars_kilo/地図情報基盤システムキロ標データ.xlsx")
-kilo = pd.read_csv(path+"地図情報基盤システムキロ標データ.csv", encoding="shift_jis")
+#kilo = pd.read_csv(path+"地図情報基盤システムキロ標データ.csv", encoding="shift_jis")
 #data = pd.read_excel(path+"karasuyama.xlsx")
 data = pd.read_csv(path+"karasuyama.csv", encoding="shift_jis")
 #,encoding='cp932
