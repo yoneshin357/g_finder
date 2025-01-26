@@ -29,8 +29,8 @@ print(path)
 
 #path = 'C:/Users/yone/Documents/PythonScripts/g_finder/'
 path = 'https://github.com/yoneshin357/g_finder/blob/main/'
+path = 'https://github.com/yoneshin357/g_finder/raw/refs/heads/main/'
 
-地図情報基盤システムキロ標データ.csv
 # CSVデータを読み込む
 
 #kilo = pd.read_excel("C:/Users/yone/Documents/basic_DB/mars_kilo/地図情報基盤システムキロ標データ.xlsx")
