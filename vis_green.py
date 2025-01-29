@@ -111,7 +111,7 @@ expander.write(
 
 st.write(
     """
-    # 🍃🌳Green Finder App🍃🌳
+    # 🍃🌳Green Finder🍃🌳
     """
 )
     
