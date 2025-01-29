@@ -48,7 +48,7 @@ print("行、列=",data.shape)
 st.set_page_config(page_title="G-Finder", 
                    layout="wide", page_icon="🌳",
                    initial_sidebar_state="expanded")
-st.write("path="+str(path))
+#st.write("path="+str(path))
 
 limit_dmy =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
 limit =  pd.DataFrame({"閾値": pd.Series([0, 0, 0, 0, 0])})
