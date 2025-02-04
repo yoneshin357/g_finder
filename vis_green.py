@@ -45,7 +45,7 @@ print("行、列=",data.shape)
 
 
 # Streamlitアプリの設定
-st.set_page_config(page_title="G-Finder", 
+st.set_page_config(page_title="Green Finder", 
                    layout="wide", page_icon="🌳",
                    initial_sidebar_state="expanded")
 #st.write("path="+str(path))
@@ -80,6 +80,7 @@ data['集計キロ程'] = data['キロ程']//intvl*intvl+int(intvl/2)
 
 tmp = data.groupby(['通称線','走行方向','date','集計キロ程'])[['judge','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']].sum().reset_index()
 tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']],left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
+tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 
 tsusho_choice = data['通称線'].unique()
 dir_choice = data['走行方向'].unique()
@@ -124,21 +125,19 @@ st.success(
 
 
 options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-selection = st.pills("描画する支障位置", options)
+selection = st.pills("描画する支障位置", options, selection_mode="multi")
 #, selection_mode="multi"
 st.markdown(f"Your selected options: {selection}.")
 
-
-col_exp = st.columns(3)
-with col_exp[0]:
-    st.button('CSV出力')    
-with col_exp[1]:
-    st.button('PDF出力')    
-with col_exp[2]:
-    st.button('HTML出力')
+options_rank = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+selection_rank = st.pills("描画する支障ランク", options_rank, selection_mode="multi")
+#
+st.markdown(f"Your selected options: {selection_rank}.")
 
 
-tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
+
+
+
 
 
 tooltip = {
@@ -179,4 +178,10 @@ st.pydeck_chart(
 st.bar_chart(tmp2['judge'])
 
 
-st.bar_chart(tmp2['judge'])
+col_exp = st.columns(3)
+with col_exp[0]:
+    st.button('CSV出力')    
+with col_exp[1]:
+    st.button('PDF出力')    
+with col_exp[2]:
+    st.button('HTML出力')
