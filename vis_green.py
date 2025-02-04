@@ -142,7 +142,7 @@ st.markdown(f"Your selected options: {selection_rank}.")
 
 
 tooltip = {
-    "html": "通称線{通称線}<br>集計キロ程{集計キロ程}<br>支障数{judge}",
+    "html": "通称線{通称線}<br>集計キロ程{集計キロ程}<br>支障数{judge}<br>駅名{N02_005}",
     "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
 }
 
@@ -175,7 +175,7 @@ st.pydeck_chart(
                 sta,
                 get_position=["lon", "lat"],  
                 get_radius=500,  
-                get_color=[0, 0, 255],  
+                get_color=[255, 255, 255],  
                 pickable=True, 
                 auto_highlight=True, 
             )
