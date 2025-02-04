@@ -129,9 +129,9 @@ selection = st.pills("描画する支障位置", options, selection_mode="multi"
 #, selection_mode="multi"
 st.markdown(f"Your selected options: {selection}.")
 
-options_rank = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+options_rank = ["A","B","C"]
 selection_rank = st.pills("描画する支障ランク", options_rank, selection_mode="multi")
-#
+
 st.markdown(f"Your selected options: {selection_rank}.")
 
 
