@@ -113,16 +113,17 @@ st.success(
 col0 = st.columns(2)
 with col0[0]:
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-    selection = st.pills("描画する支障位置", options, selection_mode="multi",index=[0,1,2,3,4])
+    #selection = st.pills("描画する支障位置", options, selection_mode="multi",index=[0,1,2,3,4])
+    st.checkbox(options, value=True, key=options) 
 with col0[1]:
     options_rank = ["A","B","C"]
-    selection_rank = st.pills("描画する支障ランク", options_rank, selection_mode="multi",index=[0,1,2])
+    #selection_rank = st.pills("描画する支障ランク", options_rank, selection_mode="multi",index=[0,1,2])
 col1 = st.columns(2)
 with col1[0]:
 
-    selection_obj = st.pills("描画する支障ランク", obj_choice, selection_mode="multi",index=list(range(len(obj_choice))))
+    #selection_obj = st.pills("描画する支障ランク", obj_choice, selection_mode="multi",index=list(range(len(obj_choice))))
 with col1[1]:
-    selection_keito = st.pills("描画する支障ランク", keito_choice, selection_mode="multi",index=list(range(len(keito_choice))))
+    #selection_keito = st.pills("描画する支障ランク", keito_choice, selection_mode="multi",index=list(range(len(keito_choice))))
 
 
 #表示するデータの絞り込み
