@@ -46,7 +46,8 @@ st.set_page_config(page_title="Green Finder",
                    initial_sidebar_state="expanded")
 #st.write("path="+str(path))
 
-tab1, tab2 = st.tabs(["３次元地図", "グラフ"])
+
+
 
 limit_dmy =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
 limit =  pd.DataFrame({"閾値": pd.Series([0, 0, 0, 0, 0])})
@@ -112,6 +113,16 @@ st.success(
     """,
     icon="🌳"
 )
+
+tab1, tab2 = st.tabs(["３次元地図", "グラフ"])
+with tab1:
+    st.header("タブ1のヘッダー")
+    st.write("タブ1の内容")
+
+# タブ2の内容
+with tab2:
+    st.header("タブ2のヘッダー")
+    st.write("タブ2の内容")
 
 
 options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
