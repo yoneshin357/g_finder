@@ -147,7 +147,8 @@ with tab1:
                 longitude=140.02,
                 zoom=11,
                 pitch=50,
-                
+                idth="100%",  # 幅を800ピクセルに設定
+                height=800  # 高さを600ピクセルに設定
             ),
             layers=[
                 pdk.Layer(
