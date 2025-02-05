@@ -64,12 +64,7 @@ for position in limit_dict.keys():
 ### Streamlitアプリの設定
 st.set_page_config(page_title="Green Finder", 
                    layout="wide", page_icon="🌳",
-                   initial_sidebar_state="expanded",
-                  theme={
-        "primaryColor": "#4CAF50",
-        "backgroundColor": "#F0F0F0",
-        "secondaryBackgroundColor": "#E0E0E0",
-        "textColor": "#333333"})
+                   initial_sidebar_state="expanded", theme={"primaryColor": "#4CAF50","backgroundColor": "#F0F0F0","secondaryBackgroundColor": "#E0E0E0", "textColor": "#333333"})
 #st.write("path="+str(path))
 
 
