@@ -114,7 +114,11 @@ col0 = st.columns(2)
 with col0[0]:
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
     #selection = st.pills("描画する支障位置", options, selection_mode="multi",index=[0,1,2,3,4])
-    st.checkbox(options, value=True, key=options) 
+    selection = []
+    for option in options:
+        is_checked = st.checkbox(option, value=True)  # デフォルトでチェック
+        if is_checked:
+            selection.append(option)
 #with col0[1]:
 #    options_rank = ["A","B","C"]
 #    #selection_rank = st.pills("描画する支障ランク", options_rank, selection_mode="multi",index=[0,1,2])
