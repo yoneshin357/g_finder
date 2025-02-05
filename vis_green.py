@@ -83,7 +83,7 @@ with st.sidebar.form(key="my_form"):
     # 🍃 Green Finder 🌳
     """
     )
-    st.write('データインポート')
+
     uploaded_file = st.file_uploader('ファイルアップロード', type=['csv'])
     if uploaded_file is not None:
         st.write('アップロードされたファイル:', uploaded_file.name)
