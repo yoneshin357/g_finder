@@ -133,6 +133,48 @@ with col1[1]:
 tab1, tab2 = st.tabs(["３次元地図", "グラフ"])
 with tab1:
     st.write("ここに地図")
+    tooltip = {
+        "html": "通称線{通称線}<br>集計キロ程{集計キロ程}<br>支障数{judge}<br>駅名{N02_005}",
+        "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
+    }
+    
+    st.pydeck_chart(
+        pdk.Deck(
+            map_style=None,
+            tooltip=tooltip,
+            initial_view_state=pdk.ViewState(
+                latitude=36.63,
+                longitude=140.02,
+                zoom=11,
+                pitch=50,
+                
+            ),
+            layers=[
+                pdk.Layer(
+                    "ColumnLayer",
+                    data=tmp2[['lon','lat','judge','通称線','集計キロ程']],
+                    get_position="[lon, lat]",
+                    get_elevation ='judge*50',
+                    radius=200,
+                    elevation_scale=10,
+                    elevation_range=[0, 200],
+                    get_fill_color=[10, 200, 50, 140],
+                    pickable=True,
+                    extruded=True,
+                ),
+                 pdk.Layer(
+                    "ScatterplotLayer",
+                    sta,
+                    get_position=["lon", "lat"],  
+                    get_radius=500,  
+                    get_color=[255, 244, 79],  
+                    pickable=True, 
+                    auto_highlight=True, 
+                )
+    
+            ],
+        )
+    )
 
 # タブ2の内容
 with tab2:
@@ -161,48 +203,7 @@ with tab2:
 
 
 
-tooltip = {
-    "html": "通称線{通称線}<br>集計キロ程{集計キロ程}<br>支障数{judge}<br>駅名{N02_005}",
-    "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
-}
 
-st.pydeck_chart(
-    pdk.Deck(
-        map_style=None,
-        tooltip=tooltip,
-        initial_view_state=pdk.ViewState(
-            latitude=36.63,
-            longitude=140.02,
-            zoom=11,
-            pitch=50,
-            
-        ),
-        layers=[
-            pdk.Layer(
-                "ColumnLayer",
-                data=tmp2[['lon','lat','judge','通称線','集計キロ程']],
-                get_position="[lon, lat]",
-                get_elevation ='judge*50',
-                radius=200,
-                elevation_scale=10,
-                elevation_range=[0, 200],
-                get_fill_color=[10, 200, 50, 140],
-                pickable=True,
-                extruded=True,
-            ),
-             pdk.Layer(
-                "ScatterplotLayer",
-                sta,
-                get_position=["lon", "lat"],  
-                get_radius=500,  
-                get_color=[255, 244, 79],  
-                pickable=True, 
-                auto_highlight=True, 
-            )
-
-        ],
-    )
-)
 
 
 
