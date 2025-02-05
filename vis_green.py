@@ -142,7 +142,7 @@ data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク
 tmp = data_filter.groupby(['通称線','走行方向','date','集計キロ程'])[['judge','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']].sum().reset_index()
 tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
-tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('　線名：　キロ程')+tmp2['集計キロ程'].astype(str) + str('　支障数：　')+tmp2['judge'].astype(str)
+tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>線名：　キロ程')+tmp2['集計キロ程'].astype(str) + str('<br>支障数：　')+tmp2['judge'].astype(str)
 
 
 
