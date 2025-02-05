@@ -75,7 +75,7 @@ tmp = data.groupby(['通称線','走行方向','date','集計キロ程'])[['judg
 tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']],left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 
-tmp2['label'] = tmp2['通称線'].astype(str) + tmp2['集計キロ程'].astype(str) + tmp2['judge'].astype(str)
+tmp2['label'] = str('線名　')+tmp2['通称線'].astype(str) + str('線名　キロ程')+tmp2['集計キロ程'].astype(str) + str('支障数　')+tmp2['judge'].astype(str)
 
 
 tsusho_choice = data['通称線'].unique()
@@ -138,6 +138,10 @@ with col1[1]:
     selection_keito = st.pills("描画する支障ランク", keito_choice, selection_mode="multi")
 
 
+#表示するデータの絞り込み
+
+tmp3 = tmp2[(tmp2['支障位置'].isin(selection))&(tmp2['暫定ランク'].isin(selection_rank))&(tmp2['ビデオ確認による対象物'].isin(selection_obj))&(tmp2['支障物確認を行う担当分野'].isin(selection_keito))]
+
 tab1, tab2 = st.tabs(["３次元地図", "グラフ"])
 with tab1:
     st.write("ここに地図")
@@ -161,7 +165,7 @@ with tab1:
             layers=[
                 pdk.Layer(
                     "ColumnLayer",
-                    data=tmp2[['lon','lat','judge','通称線','集計キロ程','label']],
+                    data=tmp3[['lon','lat','judge','通称線','集計キロ程','label']],
                     get_position="[lon, lat]",
                     get_elevation ='judge*50',
                     radius=200,
