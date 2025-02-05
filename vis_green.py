@@ -115,6 +115,10 @@ with col0[0]:
     st.write('支障位置')
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
     selection = [option for option in options if st.checkbox(option, value=True)]
+    
+    if st.button("OFF"):
+        for option in options:
+            st.session_state[option] = False
 with col0[1]:
     st.write('暫定ランク')
     options_rank = ["A(即日)","A","B","C"]
