@@ -161,7 +161,7 @@ with tab1:
             layers=[
                 pdk.Layer(
                     "ColumnLayer",
-                    data=tmp2[['lon','lat','judge','通称線','集計キロ程']],
+                    data=tmp2,
                     get_position="[lon, lat]",
                     get_elevation ='judge*50',
                     radius=200,
