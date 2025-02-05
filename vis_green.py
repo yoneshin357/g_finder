@@ -9,6 +9,7 @@ Created on Fri Dec 27 23:17:56 2024
 import numpy as np
 import pandas as pd
 import streamlit as st
+from streamlit_pills import pills
 import os
 import pydeck as pdk
 import plotly.express as px
