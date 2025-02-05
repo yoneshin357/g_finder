@@ -75,7 +75,7 @@ tmp = data.groupby(['通称線','走行方向','date','集計キロ程'])[['judg
 tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']],left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 
-tmp2['label'] = tmp2['通称線'] + tmp2['集計キロ程'] + tmp2['judge']
+tmp2['label'] = tmp2['通称線'].astype(str) + tmp2['集計キロ程'].astype(str) + tmp2['judge'].astype(str)
 
 
 tsusho_choice = data['通称線'].unique()
