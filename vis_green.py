@@ -116,16 +116,10 @@ with col0[0]:
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
     selection = [option for option in options if st.checkbox(option, value=True)]
     
-    if st.button("すべてオフにする"):
-        for option in options:
-            st.session_state[option] = False
-        st.rerun()
-
-
 with col0[1]:
     st.write('暫定ランク')
     options_rank = ["A(即日)","A","B","C"]
-    selection_rank = [option for option in options_rank if st.checkbox(option, value=False)]
+    selection_rank = [option for option in options_rank if st.checkbox(option, value=True)]
 with col0[2]:
     st.write('対象物')
     selection_obj = [option for option in obj_choice if st.checkbox(option, value=True)]
