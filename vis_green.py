@@ -119,13 +119,13 @@ with col0[0]:
     if st.button("すべてオフにする"):
         for option in options:
             st.session_state[option] = False
-        st.experimental_rerun()
+        st.rerun()
 
 
 with col0[1]:
     st.write('暫定ランク')
     options_rank = ["A(即日)","A","B","C"]
-    selection_rank = [option for option in options_rank if st.checkbox(option, value=True)]
+    selection_rank = [option for option in options_rank if st.checkbox(option, value=False)]
 with col0[2]:
     st.write('対象物')
     selection_obj = [option for option in obj_choice if st.checkbox(option, value=True)]
