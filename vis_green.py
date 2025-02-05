@@ -53,40 +53,6 @@ st.set_page_config(page_title="Green Finder",
 
 
 
-limit_dmy =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
-limit =  pd.DataFrame({"閾値": pd.Series([0, 0, 0, 0, 0])})
-limit.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-limit_dmy.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-limit_dict = limit.to_dict(orient='dict')['閾値']
-
-data['lim'] = data['支障位置'].map(limit_dict)
-
-data['judge'] = (data['支障量'] >= data['lim']).astype(int)
-for position in limit_dict.keys():
-    data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
-
-
-data['date'] = pd.to_datetime(data['測定日']).dt.date
-
-intvl = 200
-data['集計キロ程'] = data['キロ程']//intvl*intvl+int(intvl/2)
-
-data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['ビデオ確認による対象物'].isin(selection_obj))&(data['支障物確認を行う担当分野'].isin(selection_keito))]
-
-
-tmp = data_filter.groupby(['通称線','走行方向','date','集計キロ程'])[['judge','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']].sum().reset_index()
-tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']],left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
-tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
-
-tmp2['label'] = str('線名　')+tmp2['通称線'].astype(str) + str('線名　キロ程')+tmp2['集計キロ程'].astype(str) + str('支障数　')+tmp2['judge'].astype(str)
-
-
-tsusho_choice = data['通称線'].unique()
-dir_choice = data['走行方向'].unique()
-date_choice = data['date'].unique()
-obj_choice =data['ビデオ確認による対象物'].unique()
-keito_choice =data['支障物確認を行う担当分野'].unique()
-
 with st.sidebar.form(key="my_form"):
     st.write(
     """
@@ -142,6 +108,32 @@ with col1[1]:
 
 
 #表示するデータの絞り込み
+
+limit_dmy =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
+limit =  pd.DataFrame({"閾値": pd.Series([0, 0, 0, 0, 0])})
+limit.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+limit_dmy.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+limit_dict = limit.to_dict(orient='dict')['閾値']
+data['lim'] = data['支障位置'].map(limit_dict)
+data['judge'] = (data['支障量'] >= data['lim']).astype(int)
+for position in limit_dict.keys():
+    data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
+data['date'] = pd.to_datetime(data['測定日']).dt.date
+intvl = 200
+data['集計キロ程'] = data['キロ程']//intvl*intvl+int(intvl/2)
+data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['ビデオ確認による対象物'].isin(selection_obj))&(data['支障物確認を行う担当分野'].isin(selection_keito))]
+tmp = data_filter.groupby(['通称線','走行方向','date','集計キロ程'])[['judge','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']].sum().reset_index()
+tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']],left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
+tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
+tmp2['label'] = str('線名　')+tmp2['通称線'].astype(str) + str('線名　キロ程')+tmp2['集計キロ程'].astype(str) + str('支障数　')+tmp2['judge'].astype(str)
+
+
+tsusho_choice = data['通称線'].unique()
+dir_choice = data['走行方向'].unique()
+date_choice = data['date'].unique()
+obj_choice =data['ビデオ確認による対象物'].unique()
+keito_choice =data['支障物確認を行う担当分野'].unique()
+
 
 
 tab1, tab2 = st.tabs(["３次元地図", "グラフ"])
