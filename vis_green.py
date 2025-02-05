@@ -109,17 +109,21 @@ st.success(
     icon="🌳"
 )
 
-
+st.write('表示項目設定')
 col0 = st.columns(4)
 with col0[0]:
+    st.write('支障位置')
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
     selection = [option for option in options if st.checkbox(option, value=True)]
 with col0[1]:
+    st.write('暫定ランク')
     options_rank = ["A","B","C"]
     selection_rank = [option for option in options_rank if st.checkbox(option, value=True)]
 with col0[2]:
+    st.write('対象物')
     selection_obj = [option for option in obj_choice if st.checkbox(option, value=True)]
 with col0[3]:
+    st.write('対応系統')
     selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
 
 
