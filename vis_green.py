@@ -137,7 +137,15 @@ with tab1:
 # タブ2の内容
 with tab2:
     st.write("ここにグラフ")
-
+    fig = px.bar(tmp2, x='集計キロ程', y='judge', 
+             title='集計キロ程 vs judge',
+             labels={'集計キロ程': '集計キロ程', 'judge': 'Judge'})
+    fig.update_xaxes(
+        tickvals=tmp2['集計キロ程'],  # 既存の値を使用
+        ticktext=[f"{val // 1000}k{val % 1000:03}m" for val in tmp2['集計キロ程']]  # フォーマット
+    )
+    # Streamlitでグラフを表示
+    st.plotly_chart(fig)
 
 
 
@@ -197,13 +205,8 @@ st.pydeck_chart(
 )
 
 
-st.bar_chart(tmp2['judge'])
-fig = px.bar(tmp2, x='集計キロ程', y='judge', 
-             title='集計キロ程 vs judge',
-             labels={'集計キロ程': '集計キロ程', 'judge': 'Judge'})
 
-# Streamlitでグラフを表示
-st.plotly_chart(fig)
+
 
 col_exp = st.columns(3)
 with col_exp[0]:
