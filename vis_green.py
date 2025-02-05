@@ -153,7 +153,7 @@ with tab1:
             initial_view_state=pdk.ViewState(
                 latitude=36.63,
                 longitude=140.02,
-                zoom=11,
+                zoom=7,
                 pitch=50,
                 idth="100%",  # 幅を800ピクセルに設定
                 height=800  # 高さを600ピクセルに設定
