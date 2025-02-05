@@ -80,7 +80,7 @@ keito_choice =data['支障物確認を行う担当分野'].unique()
 with st.sidebar.form(key="my_form"):
     st.write(
     """
-    # 🍃🌳 Green Finder 🍃🌳
+    # 🍃 Green Finder 🌳
     """
     )
     st.write('データインポート')
