@@ -195,7 +195,7 @@ st.pydeck_chart(
                 sta,
                 get_position=["lon", "lat"],  
                 get_radius=500,  
-                get_color=[255, 255, 255],  
+                get_color=[255, 244, 79],  
                 pickable=True, 
                 auto_highlight=True, 
             )
