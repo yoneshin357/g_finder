@@ -11,7 +11,7 @@ import pandas as pd
 import streamlit as st
 import os
 import pydeck as pdk
-
+import plotly.express as px
 try:
     print('doing')
     path = os.path.dirname(os.path.abspath(__file__))+"\\"
@@ -198,7 +198,12 @@ st.pydeck_chart(
 
 
 st.bar_chart(tmp2['judge'])
+fig = px.bar(tmp2, x='集計キロ程', y='judge', 
+             title='集計キロ程 vs judge',
+             labels={'集計キロ程': '集計キロ程', 'judge': 'Judge'})
 
+# Streamlitでグラフを表示
+st.plotly_chart(fig)
 
 col_exp = st.columns(3)
 with col_exp[0]:
