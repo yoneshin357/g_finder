@@ -35,7 +35,11 @@ data = pd.read_csv(path+"karasuyama.csv", encoding="shift_jis")
 #不要
 #,encoding='cp932
 
-
+#下処理
+#sta['通称線'] = np.nan
+#sta['集計キロ程'] = np.nan
+#sta['支障数'] = np.nan
+sta['label'] = sta['N02_005']
 
 print("行、列=",data.shape)
 
@@ -70,6 +74,9 @@ data['集計キロ程'] = data['キロ程']//intvl*intvl+int(intvl/2)
 tmp = data.groupby(['通称線','走行方向','date','集計キロ程'])[['judge','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']].sum().reset_index()
 tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']],left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
+
+tmp2['label'] = tmp2['通称線'] + tmp2['集計キロ程'] + tmp2['judge']
+
 
 tsusho_choice = data['通称線'].unique()
 dir_choice = data['走行方向'].unique()
@@ -135,10 +142,10 @@ tab1, tab2 = st.tabs(["３次元地図", "グラフ"])
 with tab1:
     st.write("ここに地図")
     tooltip = {
-        "html": "通称線{通称線}<br>集計キロ程{集計キロ程}<br>支障数{judge}<br>駅名{N02_005}",
+        "html": "{label}",
         "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
     }
-    
+    #"通称線{通称線}<br>集計キロ程{集計キロ程}<br>支障数{judge}<br>駅名{N02_005}"
     st.pydeck_chart(
         pdk.Deck(
             map_style=None,
