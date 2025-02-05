@@ -78,6 +78,11 @@ obj_choice =data['ビデオ確認による対象物'].unique()
 keito_choice =data['支障物確認を行う担当分野'].unique()
 
 with st.sidebar.form(key="my_form"):
+    st.write(
+    """
+    # 🍃🌳 Green Finder 🍃🌳
+    """
+    )
     st.write('データインポート')
     uploaded_file = st.file_uploader('ファイルアップロード', type=['csv'])
     if uploaded_file is not None:
@@ -101,11 +106,7 @@ expander.write(
     """
 )
 
-st.write(
-    """
-    # 🍃🌳 Green Finder 🍃🌳
-    """
-)
+
     
 st.success(
     """
