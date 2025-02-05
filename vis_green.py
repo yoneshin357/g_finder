@@ -116,11 +116,10 @@ with col0[0]:
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
     selection = [option for option in options if st.checkbox(option, value=True)]
     
-    if st.button("OFF"):
+    if st.button("すべてオフにする"):
         for option in options:
             st.session_state[option] = False
-    for option in options:
-        st.checkbox(option, value=st.session_state.get(option, True), key=option)
+        st.experimental_rerun()
 
 
 with col0[1]:
