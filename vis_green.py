@@ -8,15 +8,10 @@ Created on Fri Dec 27 23:17:56 2024
 
 import numpy as np
 import pandas as pd
-import time
 import streamlit as st
 import os
-#import leafmap.foliumap as leafmap
 import pydeck as pdk
-#import matplotlib.pyplot as plt
-#import folium
-#from streamlit_folium import st_folium
-#import plotly.express as px
+
 try:
     print('doing')
     path = os.path.dirname(os.path.abspath(__file__))+"\\"
@@ -26,18 +21,18 @@ except:
 print("Hello!!!!")
 print(path)
 
-
+###ファイルパス設定（直下またはgithubのURL参照）
 #path = 'C:/Users/yone/Documents/PythonScripts/g_finder/'
-path = 'https://github.com/yoneshin357/g_finder/blob/main/'
-path = 'https://github.com/yoneshin357/g_finder/raw/refs/heads/main/'
+#path = 'https://github.com/yoneshin357/g_finder/blob/main/'
+#path = 'https://github.com/yoneshin357/g_finder/raw/refs/heads/main/'
 path= ''
-# CSVデータを読み込む
 
-#kilo = pd.read_excel("C:/Users/yone/Documents/basic_DB/mars_kilo/地図情報基盤システムキロ標データ.xlsx")
+###CSVデータを読み込む
 kilo = pd.read_csv(path+"tizukiro.csv", encoding="shift_jis")
 sta = pd.read_csv(path+"station_jre.csv", encoding="shift_jis")
-#data = pd.read_excel(path+"karasuyama.xlsx")
 data = pd.read_csv(path+"karasuyama.csv", encoding="shift_jis")
+
+#不要
 #,encoding='cp932
 
 
@@ -59,20 +54,10 @@ limit_dict = limit.to_dict(orient='dict')['閾値']
 
 data['lim'] = data['支障位置'].map(limit_dict)
 
-data['判定_側方上部'] = 0
-data['判定_側方上部(窓部)'] = 0
-data['判定_下部'] = 0
-data['判定_側方下部'] = 0
-data['判定_上部'] = 0
-data['judge'] = 0
+data['judge'] = (data['支障量'] >= data['lim']).astype(int)
+for position in limit_dict.keys():
+    data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
 
-data.loc[data['支障量'] >= data['lim'],'judge'] = 1
-
-data.loc[(data['judge']==1)&(data['支障位置']=='側方上部'),'判定_側方上部'] = 1
-data.loc[(data['judge']==1)&(data['支障位置']=='側方上部(窓部)'),'判定_側方上部(窓部)'] = 1
-data.loc[(data['judge']==1)&(data['支障位置']=='下部'),'判定_下部'] = 1
-data.loc[(data['judge']==1)&(data['支障位置']=='側方下部'),'判定_側方下部'] = 1
-data.loc[(data['judge']==1)&(data['支障位置']=='上部'),'判定_上部'] = 1
 
 data['date'] = pd.to_datetime(data['測定日']).dt.date
 
@@ -86,6 +71,8 @@ tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 tsusho_choice = data['通称線'].unique()
 dir_choice = data['走行方向'].unique()
 date_choice = data['date'].unique()
+obj_choice =data['ビデオ確認による対象物'].unique()
+keito_choice =data['支障物確認を行う担当分野'].unique()
 
 with st.sidebar.form(key="my_form"):
     st.write('データインポート')
@@ -113,7 +100,7 @@ expander.write(
 
 st.write(
     """
-    # 🍃🌳Green Finder🍃🌳
+    # 🍃🌳 Green Finder 🍃🌳
     """
 )
     
@@ -128,12 +115,16 @@ st.success(
 options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
 selection = st.pills("描画する支障位置", options, selection_mode="multi")
 #, selection_mode="multi"
-st.markdown(f"Your selected options: {selection}.")
+#st.markdown(f"Your selected options: {selection}.")
 
 options_rank = ["A","B","C"]
 selection_rank = st.pills("描画する支障ランク", options_rank, selection_mode="multi")
 
-st.markdown(f"Your selected options: {selection_rank}.")
+selection_obj = st.pills("描画する支障ランク", obj_choice, selection_mode="multi")
+selection_keito = st.pills("描画する支障ランク", keito_choice, selection_mode="multi")
+
+
+#st.markdown(f"Your selected options: {selection_rank}.")
 
 
 
