@@ -51,7 +51,11 @@ st.set_page_config(page_title="Green Finder",
 #st.write("path="+str(path))
 
 
-
+tsusho_choice = data['通称線'].unique()
+dir_choice = data['走行方向'].unique()
+date_choice = data['date'].unique()
+obj_choice =data['ビデオ確認による対象物'].unique()
+keito_choice =data['支障物確認を行う担当分野'].unique()
 
 with st.sidebar.form(key="my_form"):
     st.write(
@@ -128,11 +132,7 @@ tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 tmp2['label'] = str('線名　')+tmp2['通称線'].astype(str) + str('線名　キロ程')+tmp2['集計キロ程'].astype(str) + str('支障数　')+tmp2['judge'].astype(str)
 
 
-tsusho_choice = data['通称線'].unique()
-dir_choice = data['走行方向'].unique()
-date_choice = data['date'].unique()
-obj_choice =data['ビデオ確認による対象物'].unique()
-keito_choice =data['支障物確認を行う担当分野'].unique()
+
 
 
 
