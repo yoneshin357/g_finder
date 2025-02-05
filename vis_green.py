@@ -119,6 +119,7 @@ with col0[0]:
     if st.button("すべてオフにする"):
         for option in options:
             st.session_state[option] = False
+        st.experimental_rerun()
 
 
 with col0[1]:
