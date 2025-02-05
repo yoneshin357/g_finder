@@ -119,6 +119,10 @@ with col0[0]:
     if st.button("OFF"):
         for option in options:
             st.session_state[option] = False
+    for option in options:
+        st.checkbox(option, value=st.session_state.get(option, True), key=option)
+
+
 with col0[1]:
     st.write('暫定ランク')
     options_rank = ["A(即日)","A","B","C"]
