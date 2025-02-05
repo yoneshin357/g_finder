@@ -110,14 +110,14 @@ st.success(
 )
 
 st.write('表示項目設定')
-col0 = st.columns(4)
+col0 = st.columns(5)
 with col0[0]:
     st.write('支障位置')
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
     selection = [option for option in options if st.checkbox(option, value=True)]
 with col0[1]:
     st.write('暫定ランク')
-    options_rank = ["A","B","C"]
+    options_rank = ["A(即日)","A","B","C"]
     selection_rank = [option for option in options_rank if st.checkbox(option, value=True)]
 with col0[2]:
     st.write('対象物')
@@ -125,7 +125,8 @@ with col0[2]:
 with col0[3]:
     st.write('対応系統')
     selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
-
+with col0[4]:
+    st.button('CSV出力') 
 
 
 #表示するデータの絞り込み
@@ -222,13 +223,3 @@ with tab2:
 
 
 
-
-
-
-col_exp = st.columns(3)
-with col_exp[0]:
-    st.button('CSV出力')    
-with col_exp[1]:
-    st.button('PDF出力')    
-with col_exp[2]:
-    st.button('HTML出力')
