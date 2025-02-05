@@ -71,7 +71,10 @@ data['date'] = pd.to_datetime(data['測定日']).dt.date
 intvl = 200
 data['集計キロ程'] = data['キロ程']//intvl*intvl+int(intvl/2)
 
-tmp = data.groupby(['通称線','走行方向','date','集計キロ程'])[['judge','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']].sum().reset_index()
+data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['ビデオ確認による対象物'].isin(selection_obj))&(data['支障物確認を行う担当分野'].isin(selection_keito))]
+
+
+tmp = data_filter.groupby(['通称線','走行方向','date','集計キロ程'])[['judge','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']].sum().reset_index()
 tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']],left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 
@@ -140,7 +143,6 @@ with col1[1]:
 
 #表示するデータの絞り込み
 
-tmp3 = tmp2[(tmp2['支障位置'].isin(selection))&(tmp2['暫定ランク'].isin(selection_rank))&(tmp2['ビデオ確認による対象物'].isin(selection_obj))&(tmp2['支障物確認を行う担当分野'].isin(selection_keito))]
 
 tab1, tab2 = st.tabs(["３次元地図", "グラフ"])
 with tab1:
@@ -165,7 +167,7 @@ with tab1:
             layers=[
                 pdk.Layer(
                     "ColumnLayer",
-                    data=tmp3[['lon','lat','judge','通称線','集計キロ程','label']],
+                    data=tmp2[['lon','lat','judge','通称線','集計キロ程','label']],
                     get_position="[lon, lat]",
                     get_elevation ='judge*50',
                     radius=200,
