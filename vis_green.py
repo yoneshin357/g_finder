@@ -128,7 +128,7 @@ with col0[3]:
     selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
 with col0[4]:
     radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
-    elevation_scale = st.slider("棒スケール", min_value=1, max_value=10, value=10, step=1)
+    elevation_scale = st.slider("棒スケール", min_value=1, max_value=20, value=10, step=1)
     st.button('CSV出力') 
 
 
