@@ -114,27 +114,35 @@ st.success(
     icon="🌳"
 )
 
+
+col0 = st.columns(2)
+with col0[0]:
+    options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+    selection = st.pills("描画する支障位置", options, selection_mode="multi")
+with col0[1]:
+    options_rank = ["A","B","C"]
+    selection_rank = st.pills("描画する支障ランク", options_rank, selection_mode="multi")
+col1 = st.columns(2)
+with col1[0]:
+
+    selection_obj = st.pills("描画する支障ランク", obj_choice, selection_mode="multi")
+with col1[1]:
+    selection_keito = st.pills("描画する支障ランク", keito_choice, selection_mode="multi")
+
+
 tab1, tab2 = st.tabs(["３次元地図", "グラフ"])
 with tab1:
-    st.header("タブ1のヘッダー")
-    st.write("タブ1の内容")
+    st.write("ここに地図")
 
 # タブ2の内容
 with tab2:
-    st.header("タブ2のヘッダー")
-    st.write("タブ2の内容")
+    st.write("ここにグラフ")
 
 
-options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-selection = st.pills("描画する支障位置", options, selection_mode="multi")
-#, selection_mode="multi"
-#st.markdown(f"Your selected options: {selection}.")
 
-options_rank = ["A","B","C"]
-selection_rank = st.pills("描画する支障ランク", options_rank, selection_mode="multi")
 
-selection_obj = st.pills("描画する支障ランク", obj_choice, selection_mode="multi")
-selection_keito = st.pills("描画する支障ランク", keito_choice, selection_mode="multi")
+
+
 
 
 #st.markdown(f"Your selected options: {selection_rank}.")
