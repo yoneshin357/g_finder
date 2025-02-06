@@ -51,10 +51,19 @@ obj_choice =data['ビデオ確認による対象物'].unique()
 keito_choice =data['支障物確認を行う担当分野'].unique()
 
 limit_dmy =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
+limit_dmy.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+
 limit =  pd.DataFrame({"閾値": pd.Series([0, 0, 0, 0, 0])})
 limit.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-limit_dmy.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-limit_dict = limit.to_dict(orient='dict')['閾値']
+
+
+
+if option_mode == '建築限界モード':
+    limit_dict = limit.to_dict(orient='dict')['閾値']
+else:
+    limit_dict = limit_dmy.to_dict(orient='dict')['閾値']
+
+
 data['lim'] = data['支障位置'].map(limit_dict)
 data['judge'] = (data['支障量'] >= data['lim']).astype(int)
 for position in limit_dict.keys():
@@ -80,9 +89,13 @@ with st.sidebar.form(key="my_form"):
         content = uploaded_file.read()
     selectbox_state = st.selectbox("線区", tsusho_choice)
     selectbox_direction = st.selectbox("走行方向", dir_choice)
-    numberinput_threshold = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=1000, step=1, format="%i")
-    st.write('支障カウント閾値')
-    edited_limit = st.data_editor(limit_dmy)
+    number_threshold = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=1000, step=1, format="%i")
+    #st.write('支障カウント閾値')
+    #edited_limit = st.data_editor(limit_dmy)
+    option_mode = st.radio(
+    "選択してください:",
+    ('建築限界モード', '車両限界モード')
+    )
     pressed = st.form_submit_button("マップ更新")
 
 expander = st.sidebar.expander("使用手順")
@@ -133,7 +146,7 @@ with col0[4]:
 
 
 
-intvl = 200
+intvl = number_threshold
 data['集計キロ程'] = data['キロ程']//intvl*intvl+int(intvl/2)
 data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['ビデオ確認による対象物'].isin(selection_obj))&(data['支障物確認を行う担当分野'].isin(selection_keito))]
 tmp = data_filter.groupby(['通称線','走行方向','date','集計キロ程'])[['judge','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']].sum().reset_index()
