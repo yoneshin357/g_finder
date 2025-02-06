@@ -13,6 +13,9 @@ from streamlit_pills import pills
 import os
 import pydeck as pdk
 import plotly.express as px
+import geopandas as gpd
+from shapely import wkt
+
 try:
     print('doing')
     path = os.path.dirname(os.path.abspath(__file__))+"\\"
@@ -32,6 +35,7 @@ path= ''
 kilo = pd.read_csv(path+"tizukiro.csv", encoding="shift_jis")
 sta = pd.read_csv(path+"station_jre.csv", encoding="shift_jis")
 data = pd.read_csv(path+"karasuyama.csv", encoding="shift_jis")
+line = pd.read_csv(path+"tsusho.csv", encoding="shift_jis")
 
 #不要
 #,encoding='cp932
@@ -41,6 +45,10 @@ data = pd.read_csv(path+"karasuyama.csv", encoding="shift_jis")
 #sta['集計キロ程'] = np.nan
 #sta['支障数'] = np.nan
 sta['label'] = sta['N02_003'].astype(str) +str("　")+ sta['N02_005'].astype(str)
+
+line['label'] = line['通称線']
+line['geometry'] = line['WKT'].apply(wkt.loads)
+line_gdf = gpd.GeoDataFrame(line, geometry='geometry')
 
 ###data下処理
 data['date'] = pd.to_datetime(data['測定日']).dt.date
@@ -179,6 +187,10 @@ with tab1:
                 height=800  # 高さを600ピクセルに設定
             ),
             layers=[
+                 pdk.Layer(
+                    "GeoJsonLayer",
+                    data=line_gdf
+                ),
                 pdk.Layer(
                     "ColumnLayer",
                     data=tmp2[['lon','lat','judge','通称線','集計キロ程','label']],
