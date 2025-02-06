@@ -66,7 +66,7 @@ st.set_page_config(page_title="Green Finder",
 with st.sidebar.form(key="my_form"):
 
 
-    uploaded_file = st.file_uploader('マヤ車測定結果をアップ', type=['csv'])
+    uploaded_file = st.file_uploader('マヤ車測定結果をアップロード', type=['csv'])
     if uploaded_file is not None:
         st.write('アップロードされたファイル:', uploaded_file.name)
         content = uploaded_file.read()
@@ -110,12 +110,8 @@ for position in limit_dict.keys():
 st.write("""
 # 🍃🌳 Green Finder 🍃🌳
 """)    
-st.success(
-    """
-    マヤ車測定結果を見える化してDX、GX
-    """,
-    icon="🌳"
-)
+st.success(    """    マヤ車測定結果を見える化してDX、GX    """,    icon="🌳")
+st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいます',icon="💡")
 
 st.write('表示項目設定')
 col0 = st.columns(5)
