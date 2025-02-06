@@ -146,7 +146,7 @@ tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キ
 
 
 
-tab1, tab2 = st.tabs(["３次元地図", "グラフ"])
+tab1, tab2, tab3 = st.tabs(["３次元地図", "グラフ","テーブル"])
 with tab1:
     st.write("ここに地図")
     tooltip = {
