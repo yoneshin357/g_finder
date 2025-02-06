@@ -130,15 +130,7 @@ with col0[2]:
 with col0[3]:
     st.write('対応系統')
     selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
-with col0[4]:
-    radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
-    elevation_scale = st.slider("棒スケール", min_value=1, max_value=20, value=10, step=1)
 
-    st.download_button(
-    label="集計表CSV出力",
-    data=tmp2,
-    file_name='集計表.csv',
-    mime='text/csv')
 
 
 #表示するデータの絞り込み
@@ -154,7 +146,15 @@ tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キロ程：')+tmp2['集計キロ程'].astype(str) + str('<br>支障数：　')+tmp2['judge'].astype(str)
 
 
+with col0[4]:
+    radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
+    elevation_scale = st.slider("棒スケール", min_value=1, max_value=20, value=10, step=1)
 
+    st.download_button(
+    label="集計表CSV出力",
+    data=tmp2,
+    file_name='集計表.csv',
+    mime='text/csv')
 
 
 
