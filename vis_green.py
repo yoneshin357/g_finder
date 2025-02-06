@@ -153,7 +153,7 @@ with col0[4]:
     st.download_button(
     label="集計表CSV出力",
     data=tmp2,
-    file_name='集計表.csv',
+    file_name='test.csv',
     mime='text/csv')
 
 
