@@ -66,7 +66,7 @@ st.set_page_config(page_title="Green Finder",
 with st.sidebar.form(key="my_form"):
 
 
-    uploaded_file = st.file_uploader('ファイルアップロード', type=['csv'])
+    uploaded_file = st.file_uploader('マヤ車測定結果をアップ', type=['csv'])
     if uploaded_file is not None:
         st.write('アップロードされたファイル:', uploaded_file.name)
         content = uploaded_file.read()
@@ -84,8 +84,8 @@ with st.sidebar.form(key="my_form"):
 expander = st.sidebar.expander("使用手順")
 expander.write(
     """
-    １．マヤ車測定結果の生データをアップロード（csvデータを一切加工せずにアップすること）
-    ２．線名、走行方向を設定
+    １．マヤ車測定結果の生データをアップロード（csvデータを一切加工せずにアップすること）<br>
+    ２．線名、走行方向を設定<br>
     ３．マップ表示設定を適宜切り替える
     ...
     """
