@@ -187,12 +187,7 @@ with tab1:
                 height=800  # 高さを600ピクセルに設定
             ),
             layers=[
-                 pdk.Layer(
-                    "GeoJsonLayer",
-                    data=line_gdf,
-                    get_line_width=500,  # ラインの太さを設定
-                    get_line_color=[255, 255, 255],  # ラインの色を設定（赤色）
-                ),
+
                 pdk.Layer(
                     "ColumnLayer",
                     data=tmp2[['lon','lat','judge','通称線','集計キロ程','label']],
@@ -214,6 +209,12 @@ with tab1:
                     pickable=True, 
                     auto_highlight=True, 
                 )
+                                 pdk.Layer(
+                    "GeoJsonLayer",
+                    data=line_gdf,
+                    get_line_width=300,  # ラインの太さを設定
+                    get_line_color=[255, 244, 79],  # ラインの色を設定（赤色）
+                ),
     
             ],
         )
