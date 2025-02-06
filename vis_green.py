@@ -133,7 +133,12 @@ with col0[3]:
 with col0[4]:
     radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
     elevation_scale = st.slider("棒スケール", min_value=1, max_value=20, value=10, step=1)
-    st.button('CSV出力') 
+
+    st.download_button(
+    label="集計表CSV出力",
+    data=tmp2,
+    file_name='集計表.csv',
+    mime='text/csv')
 
 
 #表示するデータの絞り込み
