@@ -214,6 +214,9 @@ with tab2:
     st.plotly_chart(fig)
 
 
+with tab3:
+    st.dataframe(tmp2)
+
 
 
 
