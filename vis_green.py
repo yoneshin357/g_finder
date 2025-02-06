@@ -76,7 +76,7 @@ with st.sidebar.form(key="my_form"):
     #st.write('支障カウント閾値')
     #edited_limit = st.data_editor(limit_dmy)
     option_mode = st.radio(
-    "選択してください:",
+    "モードを選択してください:",
     ('建築限界モード', '車両限界モード')
     )
     pressed = st.form_submit_button("マップ更新")
