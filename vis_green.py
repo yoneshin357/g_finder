@@ -152,7 +152,7 @@ with col0[4]:
 
     st.download_button(
     label="集計表CSV出力",
-    data=tmp2,
+    data=tmp2.to_csv(index=False).encode('cp932'),
     file_name='test.csv',
     mime='text/csv')
 
