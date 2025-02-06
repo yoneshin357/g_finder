@@ -208,13 +208,13 @@ with tab1:
                     get_color=[255, 244, 79],  
                     pickable=True, 
                     auto_highlight=True, 
-                )
-                                 pdk.Layer(
+                ),
+                 pdk.Layer(
                     "GeoJsonLayer",
                     data=line_gdf,
                     get_line_width=300,  # ラインの太さを設定
                     get_line_color=[255, 244, 79],  # ラインの色を設定（赤色）
-                ),
+                )
     
             ],
         )
