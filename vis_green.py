@@ -72,11 +72,7 @@ st.set_page_config(page_title="Green Finder",
 
 ###サイドバーの設定
 with st.sidebar.form(key="my_form"):
-    st.write(
-    """
-    # 🍃 Green Finder 🌳
-    """
-    )
+
 
     uploaded_file = st.file_uploader('ファイルアップロード', type=['csv'])
     if uploaded_file is not None:
@@ -89,19 +85,20 @@ with st.sidebar.form(key="my_form"):
     edited_limit = st.data_editor(limit_dmy)
     pressed = st.form_submit_button("マップ更新")
 
-expander = st.sidebar.expander("Help")
+expander = st.sidebar.expander("使用手順")
 expander.write(
     """
-    This app allows users to view migration between states from 2018-2019.
-    Overall US plots all states with substantial migration-based relationships with other states.
-    Any other option plots only migration from or to a given state. This map will be updated
-    to show migration between 2019 and 2020 once new census data comes out.
+    １．マヤ車測定結果の生データをアップロード（csvデータを一切加工せずにアップすること）
+    ２．線名、走行方向を設定
+    ３．マップ表示設定を適宜切り替える
     ...
     """
 )
 
 
-    
+st.write("""
+# 🍃🌳 Green Finder 🍃🌳
+""")    
 st.success(
     """
     マヤ車測定結果を見える化してDX、GX
@@ -122,7 +119,7 @@ with col0[1]:
     selection_rank = [option for option in options_rank if st.checkbox(option, value=True)]
 with col0[2]:
     st.write('対象物')
-    selection_obj = [option for option in obj_choice if st.checkbox(option, value=True)]
+    selection_obj = [option for option in obj_choice if st.checkbox(option, value=(option == "草木"))]
 with col0[3]:
     st.write('対応系統')
     selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
