@@ -50,24 +50,7 @@ date_choice = data['date'].unique()
 obj_choice =data['ビデオ確認による対象物'].unique()
 keito_choice =data['支障物確認を行う担当分野'].unique()
 
-limit_dmy =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
-limit_dmy.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
 
-limit =  pd.DataFrame({"閾値": pd.Series([0, 0, 0, 0, 0])})
-limit.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-
-
-
-if option_mode == '建築限界モード':
-    limit_dict = limit.to_dict(orient='dict')['閾値']
-else:
-    limit_dict = limit_dmy.to_dict(orient='dict')['閾値']
-
-
-data['lim'] = data['支障位置'].map(limit_dict)
-data['judge'] = (data['支障量'] >= data['lim']).astype(int)
-for position in limit_dict.keys():
-    data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
 
 
 ### Streamlitアプリの設定
@@ -108,6 +91,21 @@ expander.write(
     """
 )
 
+
+limit_dmy =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
+limit_dmy.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+limit =  pd.DataFrame({"閾値": pd.Series([0, 0, 0, 0, 0])})
+limit.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+if option_mode == '建築限界モード':
+    limit_dict = limit.to_dict(orient='dict')['閾値']
+else:
+    limit_dict = limit_dmy.to_dict(orient='dict')['閾値']
+
+
+data['lim'] = data['支障位置'].map(limit_dict)
+data['judge'] = (data['支障量'] >= data['lim']).astype(int)
+for position in limit_dict.keys():
+    data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
 
 st.write("""
 # 🍃🌳 Green Finder 🍃🌳
