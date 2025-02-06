@@ -189,7 +189,9 @@ with tab1:
             layers=[
                  pdk.Layer(
                     "GeoJsonLayer",
-                    data=line_gdf
+                    data=line_gdf,
+                    get_line_width=500,  # ラインの太さを設定
+                    get_line_color=[255, 255, 255],  # ラインの色を設定（赤色）
                 ),
                 pdk.Layer(
                     "ColumnLayer",
