@@ -3,3 +3,5 @@ streamlit_pills
 pandas
 numpy
 plotly==5.15.0
+geopandas
+shapely
