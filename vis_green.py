@@ -141,9 +141,8 @@ col0 = st.columns(5)
 with col0[0]:
     st.write('支障位置')
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-    checkbox_states = {option: st.checkbox(option, value=True) for option in options}
-    selection = [option for option in options if st.checkbox(option, value=True)]
 
+    selection = [option for option in options if st.checkbox(option, value=True)]
 
 
 with col0[1]:
