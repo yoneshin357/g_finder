@@ -80,7 +80,6 @@ st.markdown(
         position: fixed;
         top: 0;
         width: 100%;
-        background-color: white;
         z-index: 1000;
         border-bottom: 1px solid #e6e6e6;
         padding: 10px 0;
@@ -132,7 +131,7 @@ data['judge'] = (data['支障量'] >= data['lim']).astype(int)
 for position in limit_dict.keys():
     data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
 
-st.markdown('<div class="fixed-title"><h1>固定タイトル</h1></div>', unsafe_allow_html=True)
+st.markdown('<div class="fixed-title"><h1>🍃🌳 Green Finder 🍃🌳</h1></div>', unsafe_allow_html=True)
 st.write("""
 # 🍃🌳 Green Finder 🍃🌳
 """)    
