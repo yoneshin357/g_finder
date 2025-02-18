@@ -184,7 +184,7 @@ with col0[4]:
 
 tab1, tab2, tab3, tab4 = st.tabs(["３次元地図", "グラフ","集計表","使用手順と注意"])
 with tab1:
-    st.write("ここに地図")
+    
     tooltip = {
         "html": "{label}",
         "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
@@ -238,7 +238,7 @@ with tab1:
 
 # タブ2の内容
 with tab2:
-    st.write("ここにグラフ")
+    
     fig = px.bar(tmp2, x='集計キロ程', y='judge', 
              title=selectbox_state,
              labels={'集計キロ程': '集計キロ程', '支障数': 'Judge'})
@@ -251,7 +251,7 @@ with tab2:
 
 
 with tab3:
-    st.dataframe(tmp2[['通称線','走行方向','date','集計キロ程','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']])
+    st.table(tmp2[['通称線','走行方向','date','集計キロ程','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']])
 
 
 
