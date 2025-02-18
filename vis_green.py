@@ -251,7 +251,7 @@ with tab2:
 
 
 with tab3:
-    st.dataframe(tmp2[['通称線','走行方向','date','集計キロ程','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']], use_container_width=True, on_select=on_select)
+    st.dataframe(tmp2[['通称線','走行方向','date','集計キロ程','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']], on_select=on_select)
 
 
 
