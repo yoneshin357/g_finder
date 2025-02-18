@@ -131,10 +131,8 @@ data['judge'] = (data['支障量'] >= data['lim']).astype(int)
 for position in limit_dict.keys():
     data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
 
-st.markdown('<div class="fixed-title"><h1>🍃🌳 Green Finder 🍃🌳</h1></div>', unsafe_allow_html=True)
-st.write("""
-# 🍃🌳 Green Finder 🍃🌳
-""")    
+st.markdown('<div class="fixed-title"><h1><br>🍃🌳 Green Finder 🍃🌳</h1></div>', unsafe_allow_html=True)
+
 st.success(    """    マヤ車測定結果を見える化してDX、GX    """,    icon="🌳")
 st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
