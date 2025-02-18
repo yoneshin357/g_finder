@@ -87,8 +87,9 @@ with st.sidebar.form(key="my_form"):
     if uploaded_file is not None:
         st.write('アップロードされたファイル:', uploaded_file.name)
         content = uploaded_file.read()
+        data = uploaded_file
     selectbox_state = st.selectbox("線区", tsusho_choice)
-    selectbox_direction = st.selectbox("走行方向", dir_choice)
+    #selectbox_direction = st.selectbox("走行方向", dir_choice)
     number_threshold = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=1000, step=1, format="%i")
     #st.write('支障カウント閾値')
     #edited_limit = st.data_editor(limit_dmy)
@@ -98,7 +99,8 @@ with st.sidebar.form(key="my_form"):
     )
     pressed = st.form_submit_button("マップ更新")
 
-data = data[(data['通称線']==selectbox_state)&(data['走行方向']==selectbox_direction)]
+data = data[data['通称線']==selectbox_state]
+#data = data[(data['通称線']==selectbox_state)&(data['走行方向']==selectbox_direction)]
 
 
 
@@ -180,7 +182,7 @@ with tab1:
         "html": "{label}",
         "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
     }
-    #"通称線{通称線}<br>集計キロ程{集計キロ程}<br>支障数{judge}<br>駅名{N02_005}"
+    #"通称線{通称線}<br>集計キロ程中心{集計キロ程}<br>支障数{judge}<br>駅名{N02_005}"
     st.pydeck_chart(
         pdk.Deck(
             map_style=None,
@@ -248,18 +250,18 @@ with tab3:
 
 
 with tab4:
-    st.write('''
-    #使用手順
+    st.markdown('''
+    #使用手順\n
     1.マヤ車測定結果の生データをアップロード\n
     2.線名、走行方向を設定\n
     3.マップ更新ボタンを押下\n
     4.マップ表示設定を適宜切り替える
     ''')
 
-    st.write('''
-    #注意点
-    -入力データは一切加工していないものを用いてください。
-    -地図に表示できる（緯度経度と紐づけできる）線名は以下です。入力データとの整合を確認してください。一致する線名が無い場合はエラーとなります。
+    st.markdown('''
+    #注意点\n
+    -入力データは一切加工していないものを用いてください。\n
+    -地図に表示できる（緯度経度と紐づけできる）線名は以下です。入力データとの整合を確認してください。一致する線名が無い場合はエラーとなります。\n
     ''')
     st.table(pd.DataFrame(kilo['線名'].unique(), columns=['読込可能な線名']))
 
