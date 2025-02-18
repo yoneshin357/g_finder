@@ -142,8 +142,16 @@ col0 = st.columns(5)
 with col0[0]:
     st.write('支障位置')
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-    selection = [option for option in options if st.checkbox(option, value=True)]
-    
+    checkbox_states = {option: st.checkbox(option, value=True) for option in options}
+    #selection = [option for option in options if st.checkbox(option, value=True)]
+    if st.button("すべてON"):
+        for option in options:
+            checkbox_states[option] = True
+    selected_options = [option for option, state in checkbox_states.items() if state]
+    st.write("チェックボックスの状態:", checkbox_states)
+    st.write("選択されたオプション:", selected_options)
+
+
 with col0[1]:
     st.write('暫定ランク')
     options_rank = ["A(即日)","A","B","C"]
