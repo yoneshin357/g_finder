@@ -131,28 +131,31 @@ data['judge'] = (data['支障量'] >= data['lim']).astype(int)
 for position in limit_dict.keys():
     data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
 
-st.markdown('<div class="fixed-title"><h1><br>🍃🌳 Green Finder 🍃🌳</h1></div>', unsafe_allow_html=True)
+st.write("""
+# 🍃🌳 Green Finder 🍃🌳
+""")    
 
 st.success(    """    マヤ車測定結果を見える化してDX、GX    """,    icon="🌳")
 st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
 st.write('**表示項目設定**')
-col0 = st.columns(5)
-with col0[0]:
-    st.write('支障位置')
-    options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-    selection = [option for option in options if st.checkbox(option, value=True)]
-    
-with col0[1]:
-    st.write('暫定ランク')
-    options_rank = ["A(即日)","A","B","C"]
-    selection_rank = [option for option in options_rank if st.checkbox(option, value=True)]
-with col0[2]:
-    st.write('対象物')
-    selection_obj = [option for option in obj_choice if st.checkbox(option, value=(option == "草木"))]
-with col0[3]:
-    st.write('対応系統')
-    selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
+with st.container():
+    col0 = st.columns(5)
+    with col0[0]:
+        st.write('支障位置')
+        options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+        selection = [option for option in options if st.checkbox(option, value=True)]
+        
+    with col0[1]:
+        st.write('暫定ランク')
+        options_rank = ["A(即日)","A","B","C"]
+        selection_rank = [option for option in options_rank if st.checkbox(option, value=True)]
+    with col0[2]:
+        st.write('対象物')
+        selection_obj = [option for option in obj_choice if st.checkbox(option, value=(option == "草木"))]
+    with col0[3]:
+        st.write('対応系統')
+        selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
 
 
 
@@ -168,16 +171,16 @@ tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']].drop_duplicates(
 tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キロ程：')+tmp2['集計キロ程'].astype(str) + str('<br>支障数：　')+tmp2['judge'].astype(str)
 
-
-with col0[4]:
-    radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
-    elevation_scale = st.slider("棒スケール", min_value=1, max_value=20, value=10, step=1)
-
-    st.download_button(
-    label="集計表CSV出力",
-    data=tmp2.to_csv(index=False).encode('cp932'),
-    file_name='test.csv',
-    mime='text/csv')
+with st.container():
+    with col0[4]:
+        radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
+        elevation_scale = st.slider("棒スケール", min_value=1, max_value=20, value=10, step=1)
+    
+        st.download_button(
+        label="集計表CSV出力",
+        data=tmp2.to_csv(index=False).encode('cp932'),
+        file_name='test.csv',
+        mime='text/csv')
 
 
 
