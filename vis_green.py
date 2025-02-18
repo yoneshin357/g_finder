@@ -172,6 +172,7 @@ tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キ
 
 with col0[4]:
     radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
+    wid = st.slider("路線太さ", min_value=50, max_value=500, value=300, step=50)
     elevation_scale = st.slider("棒スケール", min_value=1, max_value=20, value=10, step=1)
 
     st.download_button(
@@ -228,7 +229,7 @@ with tab1:
                  pdk.Layer(
                     "GeoJsonLayer",
                     data=line_gdf,
-                    get_line_width=300,  # ラインの太さを設定
+                    get_line_width=wid,  # ラインの太さを設定
                     get_line_color=[255, 244, 79],  # ラインの色を設定（赤色）
                 )
     
