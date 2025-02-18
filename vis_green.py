@@ -37,8 +37,6 @@ sta = pd.read_csv(path+"station_jre.csv", encoding="shift_jis")
 data = pd.read_csv(path+"karasuyama.csv", encoding="shift_jis")
 line = pd.read_csv(path+"tsusho.csv", encoding="shift_jis")
 
-#不要
-#,encoding='cp932
 
 ###sta下処理
 #sta['通称線'] = np.nan
@@ -60,7 +58,6 @@ keito_choice =data['支障物確認を行う担当分野'].unique()
 
 
 
-
 ### Streamlitアプリの設定
 st.set_page_config(page_title="Green Finder", 
                    layout="wide", page_icon="🌳",
@@ -76,13 +73,26 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
+st.markdown(
+    """
+    <style>
+    .fixed-title {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: white;
+        z-index: 1000;
+        border-bottom: 1px solid #e6e6e6;
+        padding: 10px 0;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 
 ###サイドバーの設定
 with st.sidebar.form(key="my_form"):
-
-
     uploaded_file = st.file_uploader('マヤ車測定結果csvをアップロード', type=['csv'])
     if uploaded_file is not None:
         st.write('アップロードされたファイル:', uploaded_file.name)
@@ -94,15 +104,13 @@ with st.sidebar.form(key="my_form"):
     #st.write('支障カウント閾値')
     #edited_limit = st.data_editor(limit_dmy)
     option_mode = st.radio(
-    "モードを選択してください:",
+    "支障判定モードを選択してください:",
     ('建築限界モード', '車両限界モード')
     )
     pressed = st.form_submit_button("マップ更新")
 
 data = data[data['通称線']==selectbox_state]
 #data = data[(data['通称線']==selectbox_state)&(data['走行方向']==selectbox_direction)]
-
-
 
 
 #expander = st.sidebar.expander("連絡先")
@@ -124,11 +132,12 @@ data['judge'] = (data['支障量'] >= data['lim']).astype(int)
 for position in limit_dict.keys():
     data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
 
+st.markdown('<div class="fixed-title"><h1>固定タイトル</h1></div>', unsafe_allow_html=True)
 st.write("""
 # 🍃🌳 Green Finder 🍃🌳
 """)    
 st.success(    """    マヤ車測定結果を見える化してDX、GX    """,    icon="🌳")
-st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいます',icon="💡")
+st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
 st.write('**表示項目設定**')
 col0 = st.columns(5)
@@ -250,18 +259,17 @@ with tab3:
 
 
 with tab4:
-    st.write("""# 🌳 使用手順""")
+    st.write("""## 🌳 使用手順""")
     st.markdown('''
-    #使用手順\n
-    1.マヤ車測定結果の生データをアップロード\n
-    2.線名、走行方向を設定\n
-    3.マップ更新ボタンを押下\n
-    4.マップ表示設定を適宜切り替える
+        1.マヤ車測定結果の生データをアップロードする。\n
+    2.表示する線名を設定する。\n
+    3.支障判定モードを設定する。\n
+    4.マップ更新ボタンを押下。\n
+    5.マップ表示設定を適宜切り替える。
     ''')
-    st.write("""# 🌳 注意点""")
+    st.write("""## 🌳 注意点""")
     st.markdown('''
-    #注意点\n
-    -入力データは一切加工していないものを用いてください。\n
+        -入力するcsvデータは一切加工していないものを用いてください。\n
     -地図に表示できる（緯度経度と紐づけできる）線名は以下です。入力データとの整合を確認してください。一致する線名が無い場合はエラーとなります。\n
     ''')
     st.table(pd.DataFrame(kilo['線名'].unique(), columns=['読込可能な線名']))
