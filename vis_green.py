@@ -147,9 +147,11 @@ with col0[0]:
     if st.button("すべてON"):
         for option in options:
             checkbox_states[option] = True
-    selected_options = [option for option, state in checkbox_states.items() if state]
-    st.write("チェックボックスの状態:", checkbox_states)
-    st.write("選択されたオプション:", selected_options)
+    if st.button("すべてOFF"):
+        for option in options:
+            checkbox_states[option] = False
+    selection = [option for option, state in checkbox_states.items() if state]
+
 
 
 with col0[1]:
