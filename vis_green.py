@@ -90,12 +90,7 @@ with st.sidebar.form(key="my_form"):
     pressed = st.form_submit_button("マップ更新")
 
 #expander = st.sidebar.expander("連絡先")
-#expander.write(
-    """
-    設備部門土木ユニット　xxx-xxxx
-    ...
-    """
-)
+#expander.write(    """    設備部門土木ユニット　xxx-xxxx    ...    """)
 
 
 limit_dmy =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
