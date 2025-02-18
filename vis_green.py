@@ -56,7 +56,45 @@ date_choice = data['date'].unique()
 obj_choice =data['ビデオ確認による対象物'].unique()
 keito_choice =data['支障物確認を行う担当分野'].unique()
 
+###fx
+def init_buttons(all_button, part_button_list):
+    if all_button not in st.session_state: 
+        st.session_state[all_button] = True
+    for part_button in part_button_list:
+        if part_button not in st.session_state:
+            st.session_state[part_button] = True
 
+
+def changed_part_button_by_all_button(all_button, part_button_list):
+    for part_button in part_button_list:
+        if(st.session_state[all_button]):
+            #全て選択をTrueにした場合、選択ボタンをすべてTrueにする
+            st.session_state[part_button] = st.session_state[all_button]
+
+def changed_all_button_by_part_button(all_button, part_button_list):
+    if all(st.session_state[part_button] for part_button in part_button_list):
+        # 選択ボタンがすべてTrueの場合、全てをTrueにする
+        st.session_state[all_button] = True
+    else:
+        # 選択ボタンが一部True(False)または全てFalseの場合、全てをFalseにする
+        st.session_state[all_button] = False
+
+def create_checkbox_group(all_button, part_button_list, page_position):
+    init_buttons(all_button, part_button_list)
+
+    page_position.checkbox(
+        all_button, 
+        value=st.session_state[all_button], 
+        key=all_button, 
+        on_change=lambda: changed_part_button_by_all_button(all_button, part_button_list)
+    )
+
+    for part_button in part_button_list:
+        page_position.checkbox(part_button, 
+            value=st.session_state[part_button], 
+            key=part_button, 
+            on_change=lambda: changed_all_button_by_part_button(all_button, part_button_list)
+        )
 
 ### Streamlitアプリの設定
 st.set_page_config(page_title="Green Finder", 
@@ -143,14 +181,11 @@ with col0[0]:
     st.write('支障位置')
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
     checkbox_states = {option: st.checkbox(option, value=True) for option in options}
-    #selection = [option for option in options if st.checkbox(option, value=True)]
-    if st.button("すべてON"):
-        for option in options:
-            checkbox_states[option] = True
-    if st.button("すべてOFF"):
-        for option in options:
-            checkbox_states[option] = False
-    selection = [option for option, state in checkbox_states.items() if state]
+    selection = [option for option in options if st.checkbox(option, value=True)]
+
+    all_button = "全て選択"
+    part_button_list = ["a","b","c","d","e"]
+    create_checkbox_group(all_button, part_button_list, st)
 
 
 
