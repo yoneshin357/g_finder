@@ -66,7 +66,16 @@ st.set_page_config(page_title="Green Finder",
                    layout="wide", page_icon="🌳",
                    initial_sidebar_state="expanded")
 #st.write("path="+str(path))
-
+st.markdown(
+    """
+    <style>
+    div[role="listbox"] ul {
+        background-color: #f0f0f0; /* 背景色を変更 */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 
 
@@ -88,6 +97,11 @@ with st.sidebar.form(key="my_form"):
     ('建築限界モード', '車両限界モード')
     )
     pressed = st.form_submit_button("マップ更新")
+
+data = data[(data['通称線']==selectbox_state)&(data['走行方向']==selectbox_direction)]
+
+
+
 
 #expander = st.sidebar.expander("連絡先")
 #expander.write(    """    設備部門土木ユニット　xxx-xxxx    ...    """)
@@ -235,7 +249,7 @@ with tab3:
 
 with tab4:
     st.write('''
-    **使用手順**\n
+    #使用手順
     1.マヤ車測定結果の生データをアップロード\n
     2.線名、走行方向を設定\n
     3.マップ更新ボタンを押下\n
@@ -243,11 +257,11 @@ with tab4:
     ''')
 
     st.write('''
-    **注意点**
+    #注意点
     -入力データは一切加工していないものを用いてください。
     -地図に表示できる（緯度経度と紐づけできる）線名は以下です。入力データとの整合を確認してください。一致する線名が無い場合はエラーとなります。
     ''')
-    st.dataframe(pd.DataFrame(kilo['線名'].unique(), columns=['読込可能な線名']))
+    st.table(pd.DataFrame(kilo['線名'].unique(), columns=['読込可能な線名']))
 
 
 
