@@ -108,7 +108,7 @@ with st.sidebar.form(key="my_form"):
     ('建築限界モード', '車両限界モード')
     )
     pressed = st.form_submit_button("マップ更新")
-    st.success(    """    マヤ車測定結果を見える化してDX、GX    """,    icon="🌳")
+    #st.success(    """    マヤ車測定結果を見える化してDX、GX    """,    icon="🌳")
     st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
 data = data[data['通称線']==selectbox_state]
