@@ -135,7 +135,7 @@ for position in limit_dict.keys():
 
 st.write("""# 🍃🌳 Green Finder 🍃🌳""")    
 
-st.write('## 表示項目設定')
+st.write('### 表示項目設定')
 
 col0 = st.columns(5)
 with col0[0]:
