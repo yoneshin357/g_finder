@@ -133,7 +133,7 @@ data['judge'] = (data['支障量'] >= data['lim']).astype(int)
 for position in limit_dict.keys():
     data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
 
-st.write("""# 🍃🌳 Green Finder 🍃🌳""")    
+st.write("""# 🍃🌳 Green Finder""")    
 
 st.write('### 表示項目設定')
 
