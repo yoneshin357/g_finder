@@ -91,7 +91,7 @@ st.markdown(
 
 ###サイドバーの設定
 with st.sidebar.form(key="my_form"):
-
+    st.write("""##データ読込""")  
     uploaded_file = st.file_uploader('マヤ車測定結果csvをアップロード', type=['csv'])
     if uploaded_file is not None:
         st.write('アップロードされたファイル:', uploaded_file.name)
@@ -135,7 +135,7 @@ for position in limit_dict.keys():
 
 st.write("""# 🍃🌳 Green Finder 🍃🌳""")    
 
-st.write('**表示項目設定**')
+st.write('##表示項目設定')
 
 col0 = st.columns(5)
 with col0[0]:
