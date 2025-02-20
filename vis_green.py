@@ -228,7 +228,7 @@ with tab1:
                 ),
                 pdk.Layer(
                 "ColumnLayer",
-                data=tmp2[['lon','lat','建築限界判定','通称線','集計キロ程','label']],
+                data=tmp2[['lon','lat','建築限界判定','車両限界判定','通称線','集計キロ程','label']],
                 get_position="[lon, lat]",
                 get_elevation ='車両限界判定*50',
                 radius=200,
@@ -262,7 +262,7 @@ with tab1:
 with tab2:
     
     fig = px.bar(tmp2, x='集計キロ程', y='judge', 
-             title=selectbox_state,
+             title=selectbox_senku,
              labels={'集計キロ程': '集計キロ程', '支障数': 'Judge'})
     fig.update_xaxes(
         tickvals=tmp2['集計キロ程'],  # 既存の値を使用
@@ -273,7 +273,7 @@ with tab2:
 
 
 with tab3:
-    st.dataframe(tmp2[['通称線','走行方向','date','集計キロ程','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']])
+    st.dataframe(tmp2[['通称線','走行方向','date','集計キロ程','建築限界判定','建築限界判定_側方上部','建築限界判定_側方上部(窓部)','建築限界判定_下部','建築限界判定_側方下部','建築限界判定_上部','車両限界判定','車両限界判定_側方上部','車両限界判定_側方上部(窓部)','車両限界判定_下部','車両限界判定_側方下部','車両限界判定_上部']])
 
 
 
