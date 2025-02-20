@@ -176,7 +176,7 @@ data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク
 tmp = data_filter.groupby(['通称線','走行方向','date','集計キロ程'])[['建築限界判定','建築限界判定_側方上部','建築限界判定_側方上部(窓部)','建築限界判定_下部','建築限界判定_側方下部','建築限界判定_上部','車両限界判定','車両限界判定_側方上部','車両限界判定_側方上部(窓部)','車両限界判定_下部','車両限界判定_側方下部','車両限界判定_上部']].sum().reset_index()
 tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
-tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キロ程範囲：')+tmp2['集計キロ程']-intvl/2).astype(int).astype(str)+ "-" + (tmp2['集計キロ程']+intvl/2).astype(int).astype(str) + str('<br>建築限界支障数：　')+tmp2['建築限界判定'].astype(str) + str('<br>車両限界支障数：　')+tmp2['車両限界判定'].astype(str)
+tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キロ程範囲：')+(tmp2['集計キロ程']-intvl/2).astype(int).astype(str)+ "-" + (tmp2['集計キロ程']+intvl/2).astype(int).astype(str) + str('<br>建築限界支障数：　')+tmp2['建築限界判定'].astype(str) + str('<br>車両限界支障数：　')+tmp2['車両限界判定'].astype(str)
 
 with col0[4]:
     radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
