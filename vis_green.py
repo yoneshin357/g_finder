@@ -261,9 +261,9 @@ with tab1:
 # タブ2の内容
 with tab2:
     
-    fig = px.bar(tmp2, x='集計キロ程', y='judge', 
+    fig = px.bar(tmp2, x='集計キロ程', y=['建築限界判定','車両限界判定'], 
              title=selectbox_senku,
-             labels={'集計キロ程': '集計キロ程', '支障数': 'Judge'})
+             labels={'集計キロ程': '集計キロ程', '支障数': '建築限界判定'})
     fig.update_xaxes(
         tickvals=tmp2['集計キロ程'],  # 既存の値を使用
         ticktext=[f"{val // 1000}k{val % 1000:03}m" for val in tmp2['集計キロ程']]  # フォーマット
