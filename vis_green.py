@@ -162,7 +162,7 @@ with col0[2]:
     selection_LR = [option for option in LR_choice if st.checkbox(option, value=True)]
     
 with col0[3]:
-    #st.write('空きスペース')
+    st.write('空きスペース')
     #selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
 
 
