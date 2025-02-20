@@ -226,6 +226,18 @@ with tab1:
                     pickable=True,
                     extruded=True,
                 ),
+                pdk.Layer(
+                "ColumnLayer",
+                data=tmp2[['lon','lat','建築限界判定','通称線','集計キロ程','label']],
+                get_position="[lon, lat]",
+                get_elevation ='車両限界判定*50',
+                radius=200,
+                elevation_scale=elevation_scale,
+                elevation_range=[0, 200],
+                get_fill_color=[10, 50, 200, 140],
+                pickable=True,
+                extruded=True,
+                ),
                  pdk.Layer(
                     "ScatterplotLayer",
                     sta,
