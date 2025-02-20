@@ -160,7 +160,7 @@ with col0[2]:
     #st.write('対象物')
     #selection_obj = [option for option in obj_choice if st.checkbox(option, value=(option == "草木"))]
     st.write('左右')
-    selection_LR = [option for option in LR_choice if st.checkbox(option, value=True))]
+    selection_LR = [option for option in LR_choice if st.checkbox(option, value=True)]
     
 with col0[3]:
     st.write('空きスペース')
