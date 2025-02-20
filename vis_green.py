@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Dec 27 23:17:56 2024
-
 @author: yone
 """
-
 
 import numpy as np
 import pandas as pd
 import streamlit as st
-from streamlit_pills import pills
 import os
 import pydeck as pdk
 import plotly.express as px
@@ -22,46 +19,43 @@ try:
 except:
     print("skip")
     path = os.getcwd()+"\\"
-print("Hello!!!!")
-print(path)
 
-###ファイルパス設定（直下またはgithubのURL参照）
+###ファイルパス設定（直下またはgithubのURLを参照する）
 #path = 'C:/Users/yone/Documents/PythonScripts/g_finder/'
 #path = 'https://github.com/yoneshin357/g_finder/blob/main/'
 #path = 'https://github.com/yoneshin357/g_finder/raw/refs/heads/main/'
 path= ''
 
-###CSVデータを読み込む
+###CSVを読み込む
 kilo = pd.read_csv(path+"tizukiro.csv", encoding="shift_jis")
 sta = pd.read_csv(path+"station_jre.csv", encoding="shift_jis")
 data = pd.read_csv(path+"karasuyama.csv", encoding="shift_jis")
 line = pd.read_csv(path+"tsusho.csv", encoding="shift_jis")
 
-
-###sta下処理
+###sta駅の下処理
 #sta['通称線'] = np.nan
 #sta['集計キロ程'] = np.nan
 #sta['支障数'] = np.nan
 sta['label'] = sta['N02_003'].astype(str) +str("　")+ sta['N02_005'].astype(str)
 
+###line路線の下処理
 line['label'] = line['通称線']
 line['geometry'] = line['WKT'].apply(wkt.loads)
 line_gdf = gpd.GeoDataFrame(line, geometry='geometry')
 
-###data下処理
+###data測定データの下処理（１）
 data['date'] = pd.to_datetime(data['測定日']).dt.date
 tsusho_choice = data['通称線'].unique()
 dir_choice = data['走行方向'].unique()
 date_choice = data['date'].unique()
-obj_choice =data['ビデオ確認による対象物'].unique()
-keito_choice =data['支障物確認を行う担当分野'].unique()
-
 
 ### Streamlitアプリの設定
 st.set_page_config(page_title="Green Finder", 
                    layout="wide", page_icon="🌳",
                    initial_sidebar_state="expanded")
 #st.write("path="+str(path))
+
+### CSS設定
 st.markdown(
     """
     <style>
@@ -97,9 +91,9 @@ with st.sidebar.form(key="my_form"):
         st.write('アップロードされたファイル:', uploaded_file.name)
         content = uploaded_file.read()
         data = uploaded_file
-    selectbox_state = st.selectbox("線区", tsusho_choice)
+    selectbox_senku = st.selectbox("線名", tsusho_choice)
     #selectbox_direction = st.selectbox("走行方向", dir_choice)
-    number_threshold = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=1000, step=1, format="%i")
+    number_threshold = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
     #st.write('支障カウント閾値')
     #edited_limit = st.data_editor(limit_dmy)
     option_mode = st.radio(
@@ -110,65 +104,80 @@ with st.sidebar.form(key="my_form"):
     #st.success(    """    マヤ車測定結果を見える化してDX、GX    """,    icon="🌳")
     st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
-data = data[data['通称線']==selectbox_state]
-#data = data[(data['通称線']==selectbox_state)&(data['走行方向']==selectbox_direction)]
 
+###data下処理（２）（線名、走行方向、草木）
+#data = data[data['通称線']==selectbox_senku]
+data = data[(data['通称線']==selectbox_senku)&(data['走行方向']==selectbox_direction)&(data['ビデオ確認による対象物'].isin(['草木']))]
+obj_choice =data['ビデオ確認による対象物'].unique()
+keito_choice =data['支障物確認を行う担当分野'].unique()
+LR_choice = data['位置'].unique()
 
 #expander = st.sidebar.expander("連絡先")
 #expander.write(    """    設備部門土木ユニット　xxx-xxxx    ...    """)
 
 
-limit_dmy =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
-limit_dmy.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-limit =  pd.DataFrame({"閾値": pd.Series([0, 0, 0, 0, 0])})
-limit.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+#建築限界
+limit_k =  pd.DataFrame({"閾値": pd.Series([0, 0, 0, 0, 0])})
+limit_k.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+limit_k_dict = limit_k.to_dict(orient='dict')['閾値']
+
+#車両限界
+limit_s =  pd.DataFrame({"閾値": pd.Series([400, 200, 50, 50, 200])})
+limit_s.index=["側方上部","側方上部(窓部)","下部","側方下部","上部"]
+limit_s_dict = limit_s.to_dict(orient='dict')['閾値']
+
+
 if option_mode == '建築限界モード':
-    limit_dict = limit.to_dict(orient='dict')['閾値']
+    #bb
 else:
-    limit_dict = limit_dmy.to_dict(orient='dict')['閾値']
+    #aaa
 
 
-data['lim'] = data['支障位置'].map(limit_dict)
-data['judge'] = (data['支障量'] >= data['lim']).astype(int)
+data['lim_k'] = data['支障位置'].map(limit_k_dict)
+data['lim_s'] = data['支障位置'].map(limit_s_dict)
+
+data['建築限界判定'] = (data['支障量'] >= data['lim_k']).astype(int)
+data['車両限界判定'] = (data['支障量'] >= data['lim_s']).astype(int)
+
 for position in limit_dict.keys():
-    data[f'判定_{position}'] = ((data['judge'] == 1) & (data['支障位置'] == position)).astype(int)
+    data[f'建築限界支障_{position}'] = ((data['建築限界判定'] == 1) & (data['支障位置'] == position)).astype(int)
+    data[f'車両限界支障_{position}'] = ((data['車両限界判定'] == 1) & (data['支障位置'] == position)).astype(int)
 
 st.write("""# 🍃🌳 Green Finder""")    
-
 st.write('### 表示項目設定')
 
 col0 = st.columns(5)
 with col0[0]:
     st.write('支障位置')
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
-
     selection = [option for option in options if st.checkbox(option, value=True)]
-
 
 with col0[1]:
     st.write('暫定ランク')
     options_rank = ["A(即日)","A","B","C"]
     selection_rank = [option for option in options_rank if st.checkbox(option, value=True)]
 with col0[2]:
-    st.write('対象物')
-    selection_obj = [option for option in obj_choice if st.checkbox(option, value=(option == "草木"))]
+    #st.write('対象物')
+    #selection_obj = [option for option in obj_choice if st.checkbox(option, value=(option == "草木"))]
+    st.write('左右')
+    selection_LR = [option for option in LR_choice if st.checkbox(option, value=True))]
+    
 with col0[3]:
-    st.write('対応系統')
-    selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
+    st.write('空きスペース')
+    #selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
 
 
-
-#表示するデータの絞り込み
-
-
-
+#項目によるデータの絞り込み
 intvl = number_threshold
 data['集計キロ程'] = data['キロ程']//intvl*intvl+int(intvl/2)
-data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['ビデオ確認による対象物'].isin(selection_obj))&(data['支障物確認を行う担当分野'].isin(selection_keito))]
-tmp = data_filter.groupby(['通称線','走行方向','date','集計キロ程'])[['judge','判定_側方上部','判定_側方上部(窓部)','判定_下部','判定_側方下部','判定_上部']].sum().reset_index()
+#data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['ビデオ確認による対象物'].isin(selection_obj))&(data['支障物確認を行う担当分野'].isin(selection_keito))]
+data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['位置'].isin(selection_LR))]
+
+
+tmp = data_filter.groupby(['通称線','走行方向','date','集計キロ程'])[['建築限界判定','建築限界支障_側方上部','建築限界支障_側方上部(窓部)','建築限界支障_下部','建築限界支障_側方下部','建築限界支障_上部','車両限界判定','車両限界支障_側方上部','車両限界支障_側方上部(窓部)','車両限界支障_下部','車両限界支障_側方下部','車両限界支障_上部']].sum().reset_index()
 tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
-tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キロ程：')+tmp2['集計キロ程'].astype(str) + str('<br>支障数：　')+tmp2['judge'].astype(str)
+tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キロ程：')+tmp2['集計キロ程'].astype(str) + str('<br>建築限界支障数：　')+tmp2['建築限界判定'].astype(str) + str('<br>車両限界支障数：　')+tmp2['車両限界判定'].astype(str)
 
 with col0[4]:
     radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
@@ -207,9 +216,9 @@ with tab1:
 
                 pdk.Layer(
                     "ColumnLayer",
-                    data=tmp2[['lon','lat','judge','通称線','集計キロ程','label']],
+                    data=tmp2[['lon','lat','建築限界判定','通称線','集計キロ程','label']],
                     get_position="[lon, lat]",
-                    get_elevation ='judge*50',
+                    get_elevation ='建築限界判定*50',
                     radius=200,
                     elevation_scale=elevation_scale,
                     elevation_range=[0, 200],
