@@ -96,10 +96,9 @@ with st.sidebar.form(key="my_form"):
     number_threshold = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
     #st.write('支障カウント閾値')
     #edited_limit = st.data_editor(limit_dmy)
-    option_mode = st.radio(
-    "支障判定モードを選択してください:",
-    ('建築限界モード', '車両限界モード')
-    )
+    #option_mode = st.radio(
+    #"支障判定モードを選択してください:",
+    #('建築限界モード', '車両限界モード')    )
     pressed = st.form_submit_button("マップ更新")
     #st.success(    """    マヤ車測定結果を見える化してDX、GX    """,    icon="🌳")
     st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
@@ -127,10 +126,10 @@ limit_s.index=["側方上部","側方上部(窓部)","下部","側方下部","�
 limit_s_dict = limit_s.to_dict(orient='dict')['閾値']
 
 
-if option_mode == '建築限界モード':
-    print(1)
-else:
-    print(1)
+#if option_mode == '建築限界モード':
+#    print(1)
+#else:
+#    print(1)
 
 
 data['lim_k'] = data['支障位置'].map(limit_k_dict)
@@ -163,7 +162,7 @@ with col0[2]:
     selection_LR = [option for option in LR_choice if st.checkbox(option, value=True)]
     
 with col0[3]:
-    st.write('空きスペース')
+    #st.write('空きスペース')
     #selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
 
 
