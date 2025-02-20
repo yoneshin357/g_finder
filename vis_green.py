@@ -128,9 +128,9 @@ limit_s_dict = limit_s.to_dict(orient='dict')['閾値']
 
 
 if option_mode == '建築限界モード':
-    #bb
+    print(1)
 else:
-    #aaa
+    print(1)
 
 
 data['lim_k'] = data['支障位置'].map(limit_k_dict)
