@@ -205,7 +205,7 @@ with tab1:
     
     df_summary = pd.DataFrame(summary)
     
-    st.dataframe(df_summary.applymap(color_green, subset=['項目']))
+    st.dataframe(df_summary)
 
 
 
