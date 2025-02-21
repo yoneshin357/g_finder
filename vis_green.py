@@ -198,12 +198,13 @@ with tab1:
     #st.write('全数　■建築限界'+ str() +" ■車両限界" +str()+ '表示中　■建築限界'+str() +' ■車両限界　' +str()
 
     summary = {
-    'カウント': ['全数', '表示中'],
-    '建築限界支障': [data['建築限界判定'].sum(), data['車両限界判定'].sum()],
-    '車両限界支障': [ data_filter['建築限界判定'].sum(), data_filter['車両限界判定'].sum()]
+    
+    '建築限界支障': [data['建築限界判定'].sum(), data_filter['建築限界判定'].sum()],
+    '車両限界支障': [data['車両限界判定'].sum() , data_filter['車両限界判定'].sum()]
     }
     
     df_summary = pd.DataFrame(summary)
+    df_summary.index = ['全数', '表示中']
     
     st.dataframe(df_summary)
 
