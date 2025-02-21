@@ -193,7 +193,7 @@ with col0[4]:
 
 tab1, tab2, tab3, tab4 = st.tabs(["３次元地図", "グラフ","集計表","使用手順と注意"])
 with tab1:
-    st.write(str(data['建築限界判定'].sum()) +" " +str(data['車両限界判定'].sum())+str(data_filter['建築限界判定'].sum()) +" " +str(data_filter['車両限界判定'].sum()))
+    st.write('全数　■建築限界'+ str(data['建築限界判定'].sum()) +" ■車両限界" +str(data['車両限界判定'].sum())+ '表示中　■建築限界'+str(data_filter['建築限界判定'].sum()) +" <span style="color:green">■車両限界</span>　" +str(data_filter['車両限界判定'].sum()))
     tooltip = {
         "html": "{label}",
         "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
