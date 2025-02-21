@@ -189,11 +189,27 @@ with col0[4]:
     file_name='test.csv',
     mime='text/csv')
 
-
+def color_green(val):
+    color = 'green' if val == '建築限界' else ''
+    return f'background-color: {color}'
 
 tab1, tab2, tab3, tab4 = st.tabs(["３次元地図", "グラフ","集計表","使用手順と注意"])
 with tab1:
-    st.write('全数　■建築限界'+ str(data['建築限界判定'].sum()) +" ■車両限界" +str(data['車両限界判定'].sum())+ '表示中　■建築限界'+str(data_filter['建築限界判定'].sum()) +' ■車両限界　' +str(data_filter['車両限界判定'].sum()))
+    #st.write('全数　■建築限界'+ str() +" ■車両限界" +str()+ '表示中　■建築限界'+str() +' ■車両限界　' +str()
+
+    summary = {
+    '項目': ['', '建築限界', '車両限界'],
+    '種類': ['全数', data['建築限界判定'].sum(), data['車両限界判定'].sum()],
+    '表示': ['表示中', data_filter['建築限界判定'].sum(), data_filter['車両限界判定'].sum())]
+    }
+    
+    df_summary = pd.DataFrame(summary)
+    
+    st.dataframe(df_summary.applymap(color_green, subset=['項目']))
+
+
+
+
     tooltip = {
         "html": "{label}",
         "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
