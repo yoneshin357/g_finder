@@ -200,7 +200,7 @@ with tab1:
     summary = {
     '項目': ['', '建築限界', '車両限界'],
     '種類': ['全数', data['建築限界判定'].sum(), data['車両限界判定'].sum()],
-    '表示': ['表示中', data_filter['建築限界判定'].sum(), data_filter['車両限界判定'].sum())]
+    '表示': ['表示中', data_filter['建築限界判定'].sum(), data_filter['車両限界判定'].sum()]
     }
     
     df_summary = pd.DataFrame(summary)
