@@ -167,8 +167,10 @@ with col0[2]:
     selection_LR = [option for option in LR_choice if st.checkbox(option, value=True)]
     
 with col0[3]:
-    st.write('空きスペース')
+    #st.write('空きスペース')
     #selection_keito = [option for option in keito_choice if st.checkbox(option, value=True)]
+    radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
+    wid = st.slider("路線太さ", min_value=50, max_value=500, value=300, step=50)
 
 
 #項目によるデータの絞り込み
@@ -184,11 +186,10 @@ tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キロ程範囲：')+(tmp2['集計キロ程']-intvl/2).astype(int).astype(str)+ "-" + (tmp2['集計キロ程']+intvl/2).astype(int).astype(str) + str('<br>建築限界支障数：　')+tmp2['建築限界判定'].astype(str) + str('<br>車両限界支障数：　')+tmp2['車両限界判定'].astype(str)
 
 with col0[4]:
-    radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
-    wid = st.slider("路線太さ", min_value=50, max_value=500, value=300, step=50)
+
     elevation_scale = st.slider("棒スケール", min_value=1, max_value=20, value=10, step=1)
 
-    st.download_button(
+    #st.download_button(
     label="集計表CSV出力",
     data=tmp2.to_csv(index=False).encode('cp932'),
     file_name='test.csv',
