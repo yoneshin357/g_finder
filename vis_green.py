@@ -161,6 +161,17 @@ for position in limit_k_dict.keys():
 st.write("""# 🍃🌳 Green Finder""")    
 st.write('### 表示項目設定')
 
+df_test = pd.DataFrame({
+    '名前': ['Alice', 'Bob', 'Charlie'],
+    '年齢': [25, 30, 35]
+})
+if st.button('データを保存してGitHubにアップロード'):
+    # CSVファイルとして保存
+    df_test.to_csv('uploaded/data.csv', index=False)
+    st.success('データが保存されました！')
+
+
+
 col0 = st.columns(5)
 with col0[0]:
     st.write('支障位置')
