@@ -195,84 +195,86 @@ def color_green(val):
 
 tab1, tab2, tab3, tab4 = st.tabs(["３次元地図", "グラフ","集計表","使用手順と注意"])
 with tab1:
-    #st.write('全数　■建築限界'+ str() +" ■車両限界" +str()+ '表示中　■建築限界'+str() +' ■車両限界　' +str()
-
-    summary = {
+    col1,col2 = st.columns([0.2,0.8])
+    with col1:
+        #st.write('全数　■建築限界'+ str() +" ■車両限界" +str()+ '表示中　■建築限界'+str() +' ■車両限界　' +str()
     
-    '建築限界支障': [data['建築限界判定'].sum(), data_filter['建築限界判定'].sum()],
-    '車両限界支障': [data['車両限界判定'].sum() , data_filter['車両限界判定'].sum()]
-    }
+        summary = {
+        
+        '建築限界支障': [data['建築限界判定'].sum(), data_filter['建築限界判定'].sum()],
+        '車両限界支障': [data['車両限界判定'].sum() , data_filter['車両限界判定'].sum()]
+        }
+        
+        df_summary = pd.DataFrame(summary)
+        df_summary.index = ['全数', '表示中']
+        
+        st.dataframe(df_summary)
+
+
+    with col2:
+        
+        tooltip = {
+            "html": "{label}",
+            "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
+        }
+        #"通称線{通称線}<br>集計キロ程中心{集計キロ程}<br>支障数{judge}<br>駅名{N02_005}"
+        st.pydeck_chart(
+            pdk.Deck(
+                map_style=None,
+                tooltip=tooltip,
+                initial_view_state=pdk.ViewState(
+                    latitude=36.63,
+                    longitude=140.02,
+                    zoom=7,
+                    pitch=50,
+                    idth="100%",  # 幅を800ピクセルに設定
+                    height=800  # 高さを600ピクセルに設定
+                ),
+                layers=[
     
-    df_summary = pd.DataFrame(summary)
-    df_summary.index = ['全数', '表示中']
-    
-    st.dataframe(df_summary)
-
-
-
-
-    tooltip = {
-        "html": "{label}",
-        "style": {"background": "grey", "color": "white", "font-family": '"ヒラギノ角ゴ Pro W3", "Meiryo", sans-serif', "z-index": "10000"},
-    }
-    #"通称線{通称線}<br>集計キロ程中心{集計キロ程}<br>支障数{judge}<br>駅名{N02_005}"
-    st.pydeck_chart(
-        pdk.Deck(
-            map_style=None,
-            tooltip=tooltip,
-            initial_view_state=pdk.ViewState(
-                latitude=36.63,
-                longitude=140.02,
-                zoom=7,
-                pitch=50,
-                idth="100%",  # 幅を800ピクセルに設定
-                height=800  # 高さを600ピクセルに設定
-            ),
-            layers=[
-
-                pdk.Layer(
+                    pdk.Layer(
+                        "ColumnLayer",
+                        data=tmp2[['lon','lat','建築限界判定','通称線','集計キロ程','label']],
+                        get_position="[lon, lat]",
+                        get_elevation ='建築限界判定*50',
+                        radius=200,
+                        elevation_scale=elevation_scale,
+                        elevation_range=[0, 200],
+                        get_fill_color=[10, 200, 50, 140],
+                        pickable=True,
+                        extruded=True,
+                    ),
+                    pdk.Layer(
                     "ColumnLayer",
-                    data=tmp2[['lon','lat','建築限界判定','通称線','集計キロ程','label']],
+                    data=tmp2[['lon','lat','建築限界判定','車両限界判定','通称線','集計キロ程','label']],
                     get_position="[lon, lat]",
-                    get_elevation ='建築限界判定*50',
+                    get_elevation ='車両限界判定*50',
                     radius=200,
                     elevation_scale=elevation_scale,
                     elevation_range=[0, 200],
-                    get_fill_color=[10, 200, 50, 140],
+                    get_fill_color=[10, 50, 200, 140],
                     pickable=True,
                     extruded=True,
-                ),
-                pdk.Layer(
-                "ColumnLayer",
-                data=tmp2[['lon','lat','建築限界判定','車両限界判定','通称線','集計キロ程','label']],
-                get_position="[lon, lat]",
-                get_elevation ='車両限界判定*50',
-                radius=200,
-                elevation_scale=elevation_scale,
-                elevation_range=[0, 200],
-                get_fill_color=[10, 50, 200, 140],
-                pickable=True,
-                extruded=True,
-                ),
-                 pdk.Layer(
-                    "ScatterplotLayer",
-                    sta,
-                    get_position=["lon", "lat"],  
-                    get_radius=radius,  
-                    get_color=[255, 244, 79],  
-                    pickable=True, 
-                    auto_highlight=True, 
-                ),
-                 pdk.Layer(
-                    "GeoJsonLayer",
-                    data=line_gdf,
-                    get_line_width=wid,  # ラインの太さを設定
-                    get_line_color=[255, 244, 79],  # ラインの色を設定（赤色）
-                )
-    
-            ],
+                    ),
+                     pdk.Layer(
+                        "ScatterplotLayer",
+                        sta,
+                        get_position=["lon", "lat"],  
+                        get_radius=radius,  
+                        get_color=[255, 244, 79],  
+                        pickable=True, 
+                        auto_highlight=True, 
+                    ),
+                     pdk.Layer(
+                        "GeoJsonLayer",
+                        data=line_gdf,
+                        get_line_width=wid,  # ラインの太さを設定
+                        get_line_color=[255, 244, 79],  # ラインの色を設定（赤色）
+                    )
+        
+                ],
+            )
         )
-    )
 
 # タブ2の内容
 with tab2:
