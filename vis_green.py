@@ -51,8 +51,8 @@ line_gdf = gpd.GeoDataFrame(line, geometry='geometry')
 ###data測定データの下処理（１）
 data['date'] = pd.to_datetime(data['測定日']).dt.date
 tsusho_choice = data['通称線'].unique()
-dir_choice = data['走行方向'].unique()
-date_choice = data['date'].unique()
+#dir_choice = data['走行方向'].unique()
+#date_choice = data['date'].unique()
 
 ### Streamlitアプリの設定
 st.set_page_config(page_title="Green Finder", 
@@ -100,10 +100,10 @@ with st.sidebar.form(key="my_form"):
 
 
     
-    date_choice = data[(data['通称線']==selectbox_senku)]['date'].unique()
-    selectbox_date = st.selectbox("測定日", date_choice)
+    #date_choice = data[(data['通称線']==selectbox_senku)]['date'].unique()
+    #selectbox_date = st.selectbox("測定日", date_choice)
 
-    dir_choice = data[(data['通称線']==selectbox_senku)&(data['date']==selectbox_date)]['走行方向'].unique()
+    dir_choice = data[(data['通称線']==selectbox_senku)]['走行方向'].unique()
     selectbox_direction = st.selectbox("走行方向", dir_choice)
     
     number_threshold = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
@@ -119,7 +119,7 @@ with st.sidebar.form(key="my_form"):
 
 ###data下処理（２）（線名、走行方向、草木）
 #data = data[data['通称線']==selectbox_senku]
-data = data[(data['通称線']==selectbox_senku)&(data['走行方向']==selectbox_direction)&(data['ビデオ確認による対象物'].isin(['草木']))&(data['date']==selectbox_date)]
+data = data[(data['通称線']==selectbox_senku)&(data['走行方向']==selectbox_direction)&(data['ビデオ確認による対象物'].isin(['草木']))]
 obj_choice =data['ビデオ確認による対象物'].unique()
 keito_choice =data['支障物確認を行う担当分野'].unique()
 LR_choice = data['位置'].unique()
