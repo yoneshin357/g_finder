@@ -306,7 +306,7 @@ with tab1:
                 longitude=140.02,
                 zoom=7,
                 pitch=50,
-                idth="100%",  # 幅を800ピクセルに設定
+                width="100%",  # 幅を800ピクセルに設定
                 height=1200  # 高さを600ピクセルに設定
             ),
             layers=[
