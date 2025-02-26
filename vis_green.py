@@ -97,8 +97,15 @@ with st.sidebar.form(key="my_form"):
         content = uploaded_file.read()
         data = uploaded_file
     selectbox_senku = st.selectbox("線名", tsusho_choice)
-    selectbox_direction = st.selectbox("走行方向", dir_choice)
+
+
+    
+    date_choice = data[(data['通称線']==selectbox_senku)]['date'].unique()
     selectbox_date = st.selectbox("測定日", date_choice)
+
+    dir_choice = data[(data['通称線']==selectbox_senku)&(data['date']==selectbox_date)]['走行方向'].unique()
+    selectbox_direction = st.selectbox("走行方向", dir_choice)
+    
     number_threshold = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
     #st.write('支障カウント閾値')
     #edited_limit = st.data_editor(limit_dmy)
