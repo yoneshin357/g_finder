@@ -13,6 +13,7 @@ import plotly.express as px
 import geopandas as gpd
 from shapely import wkt
 import sqlite3
+from github import Github
 
 try:
     print('doing')
@@ -63,6 +64,12 @@ st.set_page_config(page_title="Green Finder",
 
 ###データベース設定
 DB_FILE = 'maya_management.db'
+
+##github設定
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+REPO_NAME = 'yoneshin357/g_finder'
+FILE_PATH = 'equipment_data.csv'
+COMMIT_MESSAGE = 'Add equipment data'
 
 # データベース接続関数
 def get_connection():
@@ -204,13 +211,19 @@ df_test = pd.DataFrame({
     '年齢': [25, 30, 35]
 })
 
+if st.button("GitHubに保存"):
+    # CSVファイルとして保存
+    df_test.to_csv(FILE_PATH, index=False)
+    
+    # GitHubに接続
+    g = Github(GITHUB_TOKEN)
+    repo = g.get_repo(REPO_NAME)
+    
+    # ファイルをアップロード
+    with open(FILE_PATH, 'r') as file:
+        content = file.read()
+    repo.create_file(FILE_PATH, COMMIT_MESSAGE, content)
 
-if st.button("データベースに追加"):
-    try:
-        add_dataframe_to_db(df_test)
-        st.success("データフレームがデータベースに追加されました！")
-    except Exception as e:
-        st.error(f"データベースに追加中にエラーが発生しました: {e}")
 
 
 col0 = st.columns(5)
