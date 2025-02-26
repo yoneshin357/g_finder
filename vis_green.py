@@ -195,7 +195,7 @@ def color_green(val):
 
 tab1, tab2, tab3, tab4 = st.tabs(["３次元地図", "グラフ","集計表","使用手順と注意"])
 with tab1:
-    col1,col2 = st.columns([0.2,0.8])
+    col1,col2 = st.columns([0.1,0.9])
     with col1:
         #st.write('全数　■建築限界'+ str() +" ■車両限界" +str()+ '表示中　■建築限界'+str() +' ■車両限界　' +str()
     
@@ -208,7 +208,7 @@ with tab1:
         df_summary = pd.DataFrame(summary)
         df_summary.index = ['全数', '表示中']
         
-        st.dataframe(df_summary)
+        st.dataframe(df_summary.T)
 
 
     with col2:
