@@ -167,7 +167,7 @@ df_test = pd.DataFrame({
 })
 if st.button('データを保存してGitHubにアップロード'):
     # CSVファイルとして保存
-    df_test.to_csv('uploaded/data.csv', index=False)
+    df_test.to_csv('data.csv', index=False)
     st.success('データが保存されました！')
 
 
