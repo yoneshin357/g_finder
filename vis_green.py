@@ -14,6 +14,7 @@ import geopandas as gpd
 from shapely import wkt
 import sqlite3
 #from github import Github
+from PIL import Image
 
 try:
     print('doing')
