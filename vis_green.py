@@ -190,10 +190,10 @@ with col0[4]:
     elevation_scale = st.slider("棒スケール", min_value=1, max_value=20, value=10, step=1)
 
     #st.download_button(
-    label="集計表CSV出力",
-    data=tmp2.to_csv(index=False).encode('cp932'),
-    file_name='test.csv',
-    mime='text/csv')
+    #label="集計表CSV出力",
+    #data=tmp2.to_csv(index=False).encode('cp932'),
+    #file_name='test.csv',
+    #mime='text/csv')
 
 
 
