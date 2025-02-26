@@ -207,6 +207,9 @@ df_summary = pd.DataFrame(summary)
 df_summary.index = ['全数', '表示中']
 
 st.dataframe(df_summary.T)
+
+st.dataframe(data['支障位置'].value_counts().reset_index().rename(columns={'index': '支障位置'}))
+
     
 tab1, tab2, tab3, tab4 = st.tabs(["３次元地図", "グラフ","集計表","使用手順と注意"])
 with tab1:
