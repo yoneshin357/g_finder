@@ -32,6 +32,7 @@ def color_green(val):
 #path = 'https://github.com/yoneshin357/g_finder/blob/main/'
 #path = 'https://github.com/yoneshin357/g_finder/raw/refs/heads/main/'
 path= ''
+IMG_PATH = 'imgs'
 
 ###CSVを読み込む
 kilo = pd.read_csv(path+"tizukiro.csv", encoding="shift_jis")
