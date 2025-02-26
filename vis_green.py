@@ -208,7 +208,9 @@ df_summary.index = ['全数', '表示中']
 
 st.dataframe(df_summary.T)
 
-st.dataframe(data['支障位置'].value_counts().reset_index().rename(columns={'index': '支障位置'}))
+tttt = pd.crosstab(data['支障位置'], data['建築限界判定'], dropna=False)
+tttt = tttt.reindex(options,fill_value=0)
+st.dataframe(tttt)
 
     
 tab1, tab2, tab3, tab4 = st.tabs(["３次元地図", "グラフ","集計表","使用手順と注意"])
