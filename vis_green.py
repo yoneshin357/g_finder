@@ -98,6 +98,7 @@ with st.sidebar.form(key="my_form"):
         data = uploaded_file
     selectbox_senku = st.selectbox("線名", tsusho_choice)
     selectbox_direction = st.selectbox("走行方向", dir_choice)
+    selectbox_date = st.selectbox("測定日", date_choice)
     number_threshold = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
     #st.write('支障カウント閾値')
     #edited_limit = st.data_editor(limit_dmy)
@@ -111,7 +112,7 @@ with st.sidebar.form(key="my_form"):
 
 ###data下処理（２）（線名、走行方向、草木）
 #data = data[data['通称線']==selectbox_senku]
-data = data[(data['通称線']==selectbox_senku)&(data['走行方向']==selectbox_direction)&(data['ビデオ確認による対象物'].isin(['草木']))]
+data = data[(data['通称線']==selectbox_senku)&(data['走行方向']==selectbox_direction)&(data['ビデオ確認による対象物'].isin(['草木']))&(data['date']==selectbox_date)]
 obj_choice =data['ビデオ確認による対象物'].unique()
 keito_choice =data['支障物確認を行う担当分野'].unique()
 LR_choice = data['位置'].unique()
