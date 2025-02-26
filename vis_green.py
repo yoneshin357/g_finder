@@ -13,7 +13,7 @@ import plotly.express as px
 import geopandas as gpd
 from shapely import wkt
 import sqlite3
-from github import Github
+#from github import Github
 
 try:
     print('doing')
