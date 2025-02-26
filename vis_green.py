@@ -140,6 +140,9 @@ limit_s_dict = limit_s.to_dict(orient='dict')['閾値']
 data['lim_k'] = data['支障位置'].map(limit_k_dict)
 data['lim_s'] = data['支障位置'].map(limit_s_dict)
 
+data['建築限界判定']=0
+data['車両限界判定']=0
+
 data['建築限界判定'] = (data['支障量'] >= data['lim_k']).astype(int)
 data['車両限界判定'] = (data['支障量'] >= data['lim_s']).astype(int)
 
@@ -209,7 +212,9 @@ df_summary.index = ['全数', '表示中']
 st.dataframe(df_summary.T)
 
 tttt = pd.crosstab(data['支障位置'], [data['建築限界判定'],data['車両限界判定']], dropna=False)
+tttt2 =  = pd.crosstab(data['支障位置'], data['車両限界判定'], dropna=False)
 tttt = tttt.reindex(options,fill_value=0)
+tttt2 =  = tttt2.reindex(options,fill_value=0)
 st.dataframe(tttt)
 
     
