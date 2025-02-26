@@ -74,8 +74,27 @@ def add_dataframe_to_db(df):
     df.to_sql('equipment', conn, if_exists='append', index=False)
     conn.close()
 
+def initialize_database():
+    # データベースに接続
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    # テーブルを作成（テーブルがない場合のみ）
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS equipment (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            location TEXT NOT NULL,
+            installation_date TEXT NOT NULL,
+            maintenance_interval INTEGER NOT NULL
+        )
+    ''')
+    
+    # 変更を保存し接続を閉じる
+    conn.commit()
+    conn.close()
 
-
+initialize_database()
 
 
 
