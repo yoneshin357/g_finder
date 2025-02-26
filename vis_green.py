@@ -12,6 +12,7 @@ import pydeck as pdk
 import plotly.express as px
 import geopandas as gpd
 from shapely import wkt
+import sqlite3
 
 try:
     print('doing')
@@ -59,6 +60,24 @@ st.set_page_config(page_title="Green Finder",
                    layout="wide", page_icon="🌳",
                    initial_sidebar_state="expanded")
 #st.write("path="+str(path))
+
+###データベース設定
+DB_FILE = 'maya_management.db'
+
+# データベース接続関数
+def get_connection():
+    conn = sqlite3.connect(DB_FILE)
+    return conn
+
+def add_dataframe_to_db(df):
+    conn = get_connection()
+    df.to_sql('equipment', conn, if_exists='append', index=False)
+    conn.close()
+
+
+
+
+
 
 ### CSS設定
 st.markdown(
@@ -165,11 +184,14 @@ df_test = pd.DataFrame({
     '名前': ['Alice', 'Bob', 'Charlie'],
     '年齢': [25, 30, 35]
 })
-if st.button('データを保存してGitHubにアップロード'):
-    # CSVファイルとして保存
-    df_test.to_csv('data.csv', index=False)
-    st.success('データが保存されました！')
 
+
+if st.button("データベースに追加"):
+    try:
+        add_dataframe_to_db(df_test)
+        st.success("データフレームがデータベースに追加されました！")
+    except Exception as e:
+        st.error(f"データベースに追加中にエラーが発生しました: {e}")
 
 
 col0 = st.columns(5)
