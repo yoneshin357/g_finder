@@ -206,24 +206,19 @@ for position in limit_k_dict.keys():
 st.write("""# 🍃🌳 Green Finder""")    
 st.write('### 表示項目設定')
 
-df_test = pd.DataFrame({
-    '名前': ['Alice', 'Bob', 'Charlie'],
-    '年齢': [25, 30, 35]
-})
 
-if st.button("GitHubに保存"):
-    # CSVファイルとして保存
-    df_test.to_csv(FILE_PATH, index=False)
-    
-    # GitHubに接続
-    g = Github(GITHUB_TOKEN)
-    repo = g.get_repo(REPO_NAME)
-    
-    # ファイルをアップロード
-    with open(FILE_PATH, 'r') as file:
-        content = file.read()
-    repo.create_file(FILE_PATH, COMMIT_MESSAGE, content)
-
+st.markdown('# 画像を保存するデモ')
+file = st.file_uploader('画像をアップロードしてください.', type=['jpg', 'jpeg', 'png'])
+if file:
+    st.markdown(f'{file.name} をアップロードしました.')
+    img_path = os.path.join(IMG_PATH, file.name)
+    # 画像を保存する
+    with open(img_path, 'wb') as f:
+        f.write(file.read())
+        
+    # 保存した画像を表示
+    img = Image.open(img_path)
+    st.image(img)
 
 
 col0 = st.columns(5)
