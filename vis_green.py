@@ -259,6 +259,7 @@ with tab1:
                     get_fill_color=[10, 200, 50, 140],
                     pickable=True,
                     extruded=True,
+                    auto_highlight=True
                 ),
                 pdk.Layer(
                 "ColumnLayer",
