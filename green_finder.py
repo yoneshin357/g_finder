@@ -20,13 +20,13 @@ path= ''
 
 ###CSV読込み
 ##座標データ
-kilo = pd.read_csv(path+"tizukiro.csv", encoding="shift_jis")
+kilo = pd.read_csv(path+"kirotei_lonlat.csv", encoding="shift_jis")
 ##駅データ
-sta = pd.read_csv(path+"station_jre.csv", encoding="shift_jis")
+sta = pd.read_csv(path+"station_lonlat_jre.csv", encoding="shift_jis")
 ##路線データ
-line = pd.read_csv(path+"tsusho.csv", encoding="shift_jis")
+line = pd.read_csv(path+"tsushosen_line.csv", encoding="shift_jis")
 ##サンプルデータ
-data = pd.read_csv(path+"karasuyama.csv", encoding="shift_jis")
+data = pd.read_csv(path+"sample_karasuyama.csv", encoding="shift_jis")
 
 ###データ下処理
 ##駅データ
@@ -37,16 +37,10 @@ line['label'] = line['通称線']
 line['geometry'] = line['WKT'].apply(wkt.loads)
 line_gdf = gpd.GeoDataFrame(line, geometry='geometry')
 
-##サンプルデータ（１）
-data['date'] = pd.to_datetime(data['測定日']).dt.date
-tsusho_choice = data['通称線'].unique()
-
-
 ###Streamlitの初期設定
 st.set_page_config(page_title="Green Finder", 
                    layout="wide", page_icon="🌳",
                    initial_sidebar_state="expanded")
-
 ###サイドバーの設定
 with st.sidebar.form(key="my_form"):
     st.write("""## データ読込""")  
@@ -55,6 +49,7 @@ with st.sidebar.form(key="my_form"):
         st.write('アップロードされたファイル:', uploaded_file.name)
         content = uploaded_file.read()
         data = uploaded_file
+        tsusho_choice = data['通称線'].unique()
     selectbox_senku = st.selectbox("線名", tsusho_choice)
     dir_choice = data[(data['通称線']==selectbox_senku)]['走行方向'].unique()
     selectbox_direction = st.selectbox("走行方向", dir_choice)
@@ -64,15 +59,16 @@ with st.sidebar.form(key="my_form"):
 
 ###測定データのフィルタリング
 data = data[(data['通称線']==selectbox_senku)&(data['走行方向']==selectbox_direction)&(data['ビデオ確認による対象物'].isin(['草木']))]
+data['date'] = pd.to_datetime(data['測定日']).dt.date
 obj_choice =data['ビデオ確認による対象物'].unique()
 keito_choice =data['支障物確認を行う担当分野'].unique()
 LR_choice = data['位置'].unique()
 
 ###閾値による支障判定
-##建築限界判定（すべて）
+##建築限界判定（すべてカウント）
 data['建築限界判定'] = 1
 
-##車両限界判定閾値
+##車両限界判定閾値（部位別閾値）
 limit_s_dict = { "側方上部": 400,"側方上部(窓部)": 200,"下部": 50, "側方下部": 50,"上部": 200}
 data['lim_s'] = data['支障位置'].map(limit_s_dict)
 data['車両限界判定']=0
@@ -82,6 +78,7 @@ for position in limit_s_dict.keys():
     data[f'建築限界判定_{position}'] = ((data['建築限界判定'] == 1) & (data['支障位置'] == position)).astype(int)
     data[f'車両限界判定_{position}'] = ((data['車両限界判定'] == 1) & (data['支障位置'] == position)).astype(int)
 
+###メインページ
 st.write("""# 🍃🌳 Green Finder""")    
 st.write('### 表示項目設定')
 
