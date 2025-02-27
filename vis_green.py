@@ -78,7 +78,7 @@ data['lim_s'] = data['支障位置'].map(limit_s_dict)
 data['車両限界判定']=0
 data['車両限界判定'] = (data['支障量'] >= data['lim_s']).astype(int)
 
-for position in limit_k_dict.keys():
+for position in limit_s_dict.keys():
     data[f'建築限界判定_{position}'] = ((data['建築限界判定'] == 1) & (data['支障位置'] == position)).astype(int)
     data[f'車両限界判定_{position}'] = ((data['車両限界判定'] == 1) & (data['支障位置'] == position)).astype(int)
 
