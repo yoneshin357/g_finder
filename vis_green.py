@@ -191,7 +191,7 @@ with tab2:
              title=selectbox_senku,
              labels={'集計キロ程': '集計キロ程', '支障数': '建築限界判定'})
     fig.update_xaxes(tickvals=tmp2['集計キロ程'],  # 既存の値を使用
-        ticktext=[f"{val // 1000}k{val % 1000:03}m" for val in tmp2['集計キロ程']]  # フォーマット)
+        ticktext=[f"{val // 1000}k{val % 1000:03}m" for val in tmp2['集計キロ程']] )
     st.plotly_chart(fig)
 with tab3:
     st.dataframe(tmp2[['通称線','走行方向','date','集計キロ程','建築限界判定','建築限界判定_側方上部','建築限界判定_側方上部(窓部)','建築限界判定_下部','建築限界判定_側方下部','建築限界判定_上部','車両限界判定','車両限界判定_側方上部','車両限界判定_側方上部(窓部)','車両限界判定_下部','車両限界判定_側方下部','車両限界判定_上部']])
