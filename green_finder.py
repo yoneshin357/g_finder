@@ -37,6 +37,10 @@ line['label'] = line['通称線']
 line['geometry'] = line['WKT'].apply(wkt.loads)
 line_gdf = gpd.GeoDataFrame(line, geometry='geometry')
 
+##サンプルデータ
+data['date'] = pd.to_datetime(data['測定日']).dt.date
+tsusho_choice = data['通称線'].unique()
+
 ###Streamlitの初期設定
 st.set_page_config(page_title="Green Finder", 
                    layout="wide", page_icon="🌳",
