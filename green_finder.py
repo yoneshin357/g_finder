@@ -165,7 +165,7 @@ with tab1:
                 radius=elevation_radius,
                 elevation_scale=elevation_scale,
                 elevation_range=[0, 200],
-                get_fill_color=[0, 128, 0, 140],
+                get_fill_color=[0, 100, 0, 140],
                 pickable=True,
                 extruded=True,
                 ),
@@ -191,7 +191,7 @@ with tab2:
     fig = px.bar(tmp2, x='集計キロ程', y=['建築限界判定','車両限界判定'], 
              title=selectbox_senku,
              labels={'集計キロ程': '集計キロ程', '支障数': '建築限界判定'},
-                color_discrete_map={'建築限界判定': 'palegreen', '車両限界判定': 'green'})
+                color_discrete_map={'建築限界判定': 'palegreen', '車両限界判定': 'darkgreen'})
     fig.update_xaxes(tickvals=tmp2['集計キロ程'],  # 既存の値を使用
         ticktext=[f"{val // 1000}k{val % 1000:03}m" for val in tmp2['集計キロ程']] )
     st.plotly_chart(fig)
