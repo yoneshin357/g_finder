@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import numpy as np
 import pandas as pd
 import streamlit as st
-import os
 import pydeck as pdk
 import plotly.express as px
 import geopandas as gpd
 from shapely import wkt
-import sqlite3
 
 ###関数設定
-def color_green(val):
-    color = 'green' if val == '建築限界' else ''
-    return f'background-color: {color}'
+#def color_green(val):
+#    color = 'green' if val == '建築限界' else ''
+#    return f'background-color: {color}'
     
 ###ファイルパス設定（直下を参照する）
 path= ''
@@ -153,8 +150,7 @@ with tab1:
                 pitch=50,
                 use_container_width=False,
                 width="100%", 
-                height=1200,
-                selection_mode="multi-object"
+                height=1200
             ),
             layers=[
                 pdk.Layer(
