@@ -53,7 +53,7 @@ with st.sidebar:
     tsusho_choice = data_raw['通称線'].unique()  
     selectbox_senku = st.selectbox("線名", tsusho_choice)
 
-    if tsusho_choice not in kilo['線名'].unique():
+    if selectbox_senku not in kilo['線名'].unique():
         st.warning('選択した線名に該当する座標データがありません。「使用手順と注意」を参照してください。',icon="🔥")
     
     dir_choice = data_raw[(data_raw['通称線']==selectbox_senku)]['走行方向'].unique()
