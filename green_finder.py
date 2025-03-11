@@ -69,7 +69,7 @@ with st.sidebar:
     st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
 ###測定データの処理２
-data = data_raw2[(data_raw2['通称線']==selectbox_senku)&(data_raw2['走行方向']==selectbox_direction)&(data_raw2['箇所名']==selectbox_kasho)&(data_raw2['ビデオ確認による対象物'].isin(['草木']))]
+data = data_raw2[(data_raw2['通称線']==selectbox_senku)&(data_raw2['走行方向']==selectbox_direction)&(data_raw2['箇所名'].isin(selectbox_kasho))&(data_raw2['ビデオ確認による対象物'].isin(['草木']))]
 
 #obj_choice =data['ビデオ確認による対象物'].unique()
 #keito_choice =data['支障物確認を行う担当分野'].unique()
