@@ -172,7 +172,7 @@ with tab1:
                 ),
                 pdk.Layer(
                 "ColumnLayer",
-                data=tmp2[['lon','lat','建築限界判定','車両限界判定','通称線','集計キロ程','label']],
+                data=tmp3[['lon','lat','建築限界判定','車両限界判定','通称線','集計キロ程','label']],
                 get_position="[lon, lat]",
                 get_elevation ='車両限界判定*50',
                 radius=elevation_radius,
@@ -201,7 +201,7 @@ with tab1:
         )
     )
 with tab2:  
-    fig = px.bar(tmp2, x='集計キロ程', y=['建築限界判定','車両限界判定'], 
+    fig = px.bar(tmp3, x='集計キロ程', y=['建築限界判定','車両限界判定'], 
              title=selectbox_senku,
              labels={'集計キロ程': '集計キロ程', '支障数': '建築限界判定'},
                 color_discrete_map={'建築限界判定': 'palegreen', '車両限界判定': 'darkgreen'})
