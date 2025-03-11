@@ -52,10 +52,15 @@ with st.sidebar:
     
     tsusho_choice = data_raw['通称線'].unique()  
     selectbox_senku = st.selectbox("線名", tsusho_choice)
+    tsusho_choice = 'aaa'
+    if tsusho_choice not in kilo['線名'].unique():
+        st.warning('選択した線名に該当する座標データがありません。「使用手順と注意」を参照してください。',icon="🔥")
     
     dir_choice = data_raw[(data_raw['通称線']==selectbox_senku)]['走行方向'].unique()
     selectbox_direction = st.selectbox("走行方向", dir_choice)
     #pressed = st.form_submit_button("マップ更新")
+
+
 
     interval = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
     data_raw['集計キロ程'] = data_raw['キロ程']//interval*interval+int(interval/2)
@@ -199,6 +204,7 @@ with tab1:
                     data=line_gdf,
                     get_line_width=wid,  # ラインの太さを設定
                     get_line_color=[255, 244, 79],  # ラインの色を設定（赤色）
+                     pickable=True,
                 )
                 ],
         )
