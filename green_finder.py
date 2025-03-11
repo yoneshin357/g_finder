@@ -57,7 +57,7 @@ with st.sidebar:
     selectbox_direction = st.selectbox("走行方向", dir_choice)
     #pressed = st.form_submit_button("マップ更新")
 
-    data_raw2 = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
+    data_raw2 = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['キロ程','通称線'],right_on=['キロ程','線名'])
     
     st.write('保技セエリア')
     options_kasho = data_raw2[(data_raw2['通称線']==selectbox_senku)&(data_raw2['走行方向']==selectbox_direction)]['箇所名'].unique()
