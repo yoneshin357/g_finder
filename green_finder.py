@@ -35,10 +35,10 @@ line['geometry'] = line['WKT'].apply(wkt.loads)
 line_gdf = gpd.GeoDataFrame(line, geometry='geometry')
 
 ##測定データの処理１
-data_raw['date'] = pd.to_datetime(data['測定日']).dt.date
+data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
 tsusho_choice = data['通称線'].unique()
 interval = 200 #暫定
-data_raw['集計キロ程'] = data['キロ程']//interval*interval+int(interval/2)
+data_raw['集計キロ程'] = data_raw['キロ程']//interval*interval+int(interval/2)
 data = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 
 ###Streamlitの初期設定
