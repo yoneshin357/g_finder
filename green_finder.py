@@ -102,8 +102,8 @@ with col0[3]:
     radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
     wid = st.slider("路線太さ", min_value=50, max_value=500, value=300, step=50)
 with col0[4]:
-    elevation_scale = st.slider("棒スケール", min_value=1, max_value=20, value=10, step=1)
-    elevation_radius = st.slider("棒スケール", min_value=100, max_value=500, value=200, step=50)
+    elevation_scale = st.slider("棒グラフ長さ", min_value=1, max_value=20, value=10, step=1)
+    elevation_radius = st.slider("棒グラフ太さ", min_value=100, max_value=500, value=200, step=50)
 
 ###測定データのフィルタリング
 data['集計キロ程'] = data['キロ程']//interval*interval+int(interval/2)
@@ -121,7 +121,7 @@ summary = {
 }
 df_summary = pd.DataFrame(summary)
 df_summary.index = ['全数', '表示中']
-st.dataframe(df_summary.T)
+#st.dataframe(df_summary.T)
     
 tab1, tab2, tab3, tab4 = st.tabs(["３次元地図", "グラフ","集計表","使用手順と注意"])
 with tab1:
@@ -142,6 +142,7 @@ with tab1:
                 use_container_width=True,
                 width="100%",  # 幅を800ピクセルに設定
                 height=1200  # 高さを600ピクセルに設定
+                , selection_mode="multi-object"
             ),
             layers=[
                 pdk.Layer(
