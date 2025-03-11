@@ -98,7 +98,7 @@ for position in limit_s_dict.keys():
 
 ###メインページ
 st.write("""# 🍃🌳 Green Finder""")    
-#st.write('### 表示項目設定')
+st.write('## 表示項目設定')
 
 ###表示項目設定
 col0 = st.columns(5)
