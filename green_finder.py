@@ -118,7 +118,7 @@ with col0[4]:
 
 ###測定データの処理３
 
-data['集計キロ程'] = data['キロ程']//interval*interval+int(interval/2)
+#data['集計キロ程'] = data['キロ程']//interval*interval+int(interval/2)
 #data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['ビデオ確認による対象物'].isin(selection_obj))&(data['支障物確認を行う担当分野'].isin(selection_keito))]
 data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['位置'].isin(selection_LR))]
 
