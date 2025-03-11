@@ -121,7 +121,7 @@ tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キロ程範囲：')+(tmp2['集計キロ程']-interval/2).astype(int).astype(str)+ "-" + (tmp2['集計キロ程']+interval/2).astype(int).astype(str) + str('<br>建築限界支障数：　')+tmp2['建築限界判定'].astype(str) + str('<br>車両限界支障数：　')+tmp2['車両限界判定'].astype(str)
 
 with col0[5]:
-    options_kasho = = tmp2['箇所名'].unique()
+    options_kasho = tmp2['箇所名'].unique()
     selection_kasho = [option for option in options_kasho if st.checkbox(option, value=True)]
 
 
