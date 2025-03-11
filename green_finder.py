@@ -54,7 +54,7 @@ with st.sidebar.form(key="my_form"):
     
     dir_choice = data_raw[(data_raw['通称線']==selectbox_senku)]['走行方向'].unique()
     selectbox_direction = st.selectbox("走行方向", dir_choice)
-
+    pressed = st.form_submit_button("マップ更新")
     st.write('保技セエリア')
     options_kasho = data_raw[(data_raw['通称線']==selectbox_senku)&(data_raw['走行方向']==selectbox_direction)]['箇所名'].unique()
     
