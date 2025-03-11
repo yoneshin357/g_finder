@@ -37,7 +37,7 @@ line['label'] = line['通称線']
 line['geometry'] = line['WKT'].apply(wkt.loads)
 line_gdf = gpd.GeoDataFrame(line, geometry='geometry')
 
-##サンプルデータ
+##サンプルデータの処理
 data['date'] = pd.to_datetime(data['測定日']).dt.date
 tsusho_choice = data['通称線'].unique()
 
@@ -78,6 +78,8 @@ data['lim_s'] = data['支障位置'].map(limit_s_dict)
 data['車両限界判定']=0
 data['車両限界判定'] = (data['支障量'] >= data['lim_s']).astype(int)
 
+
+
 for position in limit_s_dict.keys():
     data[f'建築限界判定_{position}'] = ((data['建築限界判定'] == 1) & (data['支障位置'] == position)).astype(int)
     data[f'車両限界判定_{position}'] = ((data['車両限界判定'] == 1) & (data['支障位置'] == position)).astype(int)
@@ -86,7 +88,8 @@ for position in limit_s_dict.keys():
 st.write("""# 🍃🌳 Green Finder""")    
 #st.write('### 表示項目設定')
 
-col0 = st.columns(5)
+###表示項目設定
+col0 = st.columns(6)
 with col0[0]:
     st.write('支障位置')
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
@@ -97,7 +100,8 @@ with col0[1]:
     selection_rank = [option for option in options_rank if st.checkbox(option, value=True)]
 with col0[2]:
     st.write('左右')
-    selection_LR = [option for option in LR_choice if st.checkbox(option, value=True)]
+    selection_LR = [option for option in ["左","右"] if st.checkbox(option, value=True)]
+    
 with col0[3]:
     radius = st.slider("駅サイズ", min_value=100, max_value=1000, value=500, step=100)
     wid = st.slider("路線太さ", min_value=50, max_value=500, value=300, step=50)
@@ -106,14 +110,20 @@ with col0[4]:
     elevation_radius = st.slider("棒グラフ太さ", min_value=100, max_value=500, value=200, step=50)
 
 ###測定データのフィルタリング
+
 data['集計キロ程'] = data['キロ程']//interval*interval+int(interval/2)
 #data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['ビデオ確認による対象物'].isin(selection_obj))&(data['支障物確認を行う担当分野'].isin(selection_keito))]
 data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['位置'].isin(selection_LR))]
 
 tmp = data_filter.groupby(['通称線','走行方向','date','集計キロ程'])[['建築限界判定','建築限界判定_側方上部','建築限界判定_側方上部(窓部)','建築限界判定_下部','建築限界判定_側方下部','建築限界判定_上部','車両限界判定','車両限界判定_側方上部','車両限界判定_側方上部(窓部)','車両限界判定_下部','車両限界判定_側方下部','車両限界判定_上部']].sum().reset_index()
-tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
+tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キロ程範囲：')+(tmp2['集計キロ程']-interval/2).astype(int).astype(str)+ "-" + (tmp2['集計キロ程']+interval/2).astype(int).astype(str) + str('<br>建築限界支障数：　')+tmp2['建築限界判定'].astype(str) + str('<br>車両限界支障数：　')+tmp2['車両限界判定'].astype(str)
+
+with col0[5]:
+    options_kasho = = tmp2['箇所名'].unique()
+    selection_kasho = [option for option in options_kasho if st.checkbox(option, value=True)]
+
 
 summary = {
 '建築限界支障': [data['建築限界判定'].sum(), data_filter['建築限界判定'].sum()],
