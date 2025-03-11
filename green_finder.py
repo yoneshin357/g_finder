@@ -234,5 +234,5 @@ with tab4:
     -地図に表示できる（緯度経度と紐づけできる）線名は以下です。入力データとの整合を確認してください。一致する線名が無い場合はエラーとなります。\n
     ''')
     #st.table(pd.DataFrame(kilo['線名'].unique(), columns=['読込可能な線名']))
-    st.dataframe(kilo[['線名コード','線名']].drop_duplicates(subset='線名コード'), index=False)
+    st.markdown(kilo[['線名コード','線名']].drop_duplicates(subset='線名コード').style.hide(axis="index").to_html(), unsafe_allow_html=True)
 
