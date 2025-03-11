@@ -129,7 +129,7 @@ tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キ
 
 
 
-tmp3 = tmp2[tmp2['箇所名'].isin(selection_kasho)]
+tmp3 = tmp2[tmp2['箇所名'].isin(selectbox_kasho)]
 
 summary = {
 '建築限界支障': [data['建築限界判定'].sum(), data_filter['建築限界判定'].sum()],
