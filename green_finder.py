@@ -23,7 +23,7 @@ sta = pd.read_csv(path+"station_lonlat_jre.csv", encoding="shift_jis")
 ##路線データ
 line = pd.read_csv(path+"tsushosen_line.csv", encoding="shift_jis")
 ##サンプルデータ
-data = pd.read_csv(path+"sample_karasuyama.csv", encoding="shift_jis")
+data_raw = pd.read_csv(path+"sample_karasuyama.csv", encoding="shift_jis")
 
 ###データ下処理
 ##駅データ
@@ -34,9 +34,12 @@ line['label'] = line['通称線']
 line['geometry'] = line['WKT'].apply(wkt.loads)
 line_gdf = gpd.GeoDataFrame(line, geometry='geometry')
 
-##サンプルデータの処理
-data['date'] = pd.to_datetime(data['測定日']).dt.date
+##測定データの処理１
+data_raw['date'] = pd.to_datetime(data['測定日']).dt.date
 tsusho_choice = data['通称線'].unique()
+interval = 200 #暫定
+data_raw['集計キロ程'] = data['キロ程']//interval*interval+int(interval/2)
+data = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 
 ###Streamlitの初期設定
 st.set_page_config(page_title="Green Finder", 
@@ -54,11 +57,17 @@ with st.sidebar.form(key="my_form"):
     selectbox_senku = st.selectbox("線名", tsusho_choice)
     dir_choice = data[(data['通称線']==selectbox_senku)]['走行方向'].unique()
     selectbox_direction = st.selectbox("走行方向", dir_choice)
+
+    st.write('保技セエリア')
+    options_kasho = data['箇所名'].unique()
+    selection_kasho = [option for option in options_kasho if st.checkbox(option, value=True)]
+
+    
     interval = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
     pressed = st.form_submit_button("マップ更新")
     st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
-###測定データのフィルタリング
+###測定データの処理２
 data = data[(data['通称線']==selectbox_senku)&(data['走行方向']==selectbox_direction)&(data['ビデオ確認による対象物'].isin(['草木']))]
 data['date'] = pd.to_datetime(data['測定日']).dt.date
 obj_choice =data['ビデオ確認による対象物'].unique()
@@ -86,7 +95,7 @@ st.write("""# 🍃🌳 Green Finder""")
 #st.write('### 表示項目設定')
 
 ###表示項目設定
-col0 = st.columns(6)
+col0 = st.columns(5)
 with col0[0]:
     st.write('支障位置')
     options = ["側方上部","側方上部(窓部)","下部","側方下部","上部"]
@@ -106,7 +115,7 @@ with col0[4]:
     elevation_scale = st.slider("棒グラフ長さ", min_value=1, max_value=20, value=10, step=1)
     elevation_radius = st.slider("棒グラフ太さ", min_value=100, max_value=500, value=200, step=50)
 
-###測定データのフィルタリング
+###測定データの処理３
 
 data['集計キロ程'] = data['キロ程']//interval*interval+int(interval/2)
 #data_filter = data[(data['支障位置'].isin(selection))&(data['暫定ランク'].isin(selection_rank))&(data['ビデオ確認による対象物'].isin(selection_obj))&(data['支障物確認を行う担当分野'].isin(selection_keito))]
@@ -117,10 +126,7 @@ tmp2 = tmp.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop
 tmp2 = tmp2.rename(columns={'経度': 'lon', '緯度': 'lat'})
 tmp2['label'] = str('線名：　')+tmp2['通称線'].astype(str) + str('<br>キロ程範囲：')+(tmp2['集計キロ程']-interval/2).astype(int).astype(str)+ "-" + (tmp2['集計キロ程']+interval/2).astype(int).astype(str) + str('<br>建築限界支障数：　')+tmp2['建築限界判定'].astype(str) + str('<br>車両限界支障数：　')+tmp2['車両限界判定'].astype(str)
 
-with col0[5]:
-    st.write('保技セエリア')
-    options_kasho = tmp2['箇所名'].unique()
-    selection_kasho = [option for option in options_kasho if st.checkbox(option, value=True)]
+
 
 tmp3 = tmp2[tmp2['箇所名'].isin(selection_kasho)]
 
