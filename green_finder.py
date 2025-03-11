@@ -34,13 +34,6 @@ line['label'] = line['通称線']
 line['geometry'] = line['WKT'].apply(wkt.loads)
 line_gdf = gpd.GeoDataFrame(line, geometry='geometry')
 
-##測定データの処理１
-data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
-tsusho_choice = data_raw['通称線'].unique()
-interval = 200 #暫定
-data_raw['集計キロ程'] = data_raw['キロ程']//interval*interval+int(interval/2)
-data = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
-
 ###Streamlitの初期設定
 st.set_page_config(page_title="Green Finder", 
                    layout="wide", page_icon="🌳",
@@ -52,18 +45,26 @@ with st.sidebar.form(key="my_form"):
     if uploaded_file is not None:
         st.write('アップロードされたファイル:', uploaded_file.name)
         content = uploaded_file.read()
-        data = uploaded_file
-        tsusho_choice = data['通称線'].unique()
+        data_raw = uploaded_file
+
+    data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
+    
+    tsusho_choice = data_raw['通称線'].unique()  
     selectbox_senku = st.selectbox("線名", tsusho_choice)
-    dir_choice = data[(data['通称線']==selectbox_senku)]['走行方向'].unique()
+    
+    dir_choice = data_raw[(data_raw['通称線']==selectbox_senku)]['走行方向'].unique()
     selectbox_direction = st.selectbox("走行方向", dir_choice)
 
     st.write('保技セエリア')
-    options_kasho = data['箇所名'].unique()
+    options_kasho = data_raw[(data_raw['通称線']==selectbox_senku)&(data_raw['走行方向']==selectbox_direction)]['箇所名'].unique()
+    
     selection_kasho = [option for option in options_kasho if st.checkbox(option, value=True)]
 
-    
     interval = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
+
+    data_raw['集計キロ程'] = data_raw['キロ程']//interval*interval+int(interval/2)
+    data = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
+
     pressed = st.form_submit_button("マップ更新")
     st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
