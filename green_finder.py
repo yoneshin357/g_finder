@@ -71,7 +71,7 @@ with st.sidebar:
     options_kasho = data_raw2[(data_raw2['通称線']==selectbox_senku)&(data_raw2['走行方向']==selectbox_direction)]['箇所名'].unique()
     selectbox_kasho = [option for option in options_kasho if st.checkbox(option, value=True)]
 
-    st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
+    #st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
 ###測定データの処理２
 data = data_raw2[(data_raw2['通称線']==selectbox_senku)&(data_raw2['走行方向']==selectbox_direction)&(data_raw2['箇所名'].isin(selectbox_kasho))&(data_raw2['ビデオ確認による対象物'].isin(['草木']))]
