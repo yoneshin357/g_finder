@@ -57,19 +57,15 @@ with st.sidebar:
     selectbox_direction = st.selectbox("走行方向", dir_choice)
     #pressed = st.form_submit_button("マップ更新")
 
-    data_raw2 = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['キロ程','通称線'],right_on=['キロ程','線名'])
+    interval = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
+    data_raw['集計キロ程'] = data_raw['キロ程']//interval*interval+int(interval/2)
+    
+    data_raw2 = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
     
     st.write('保技セエリア')
     options_kasho = data_raw2[(data_raw2['通称線']==selectbox_senku)&(data_raw2['走行方向']==selectbox_direction)]['箇所名'].unique()
-    
     selection_kasho = [option for option in options_kasho if st.checkbox(option, value=True)]
 
-    interval = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
-
-    data_raw['集計キロ程'] = data_raw['キロ程']//interval*interval+int(interval/2)
-    data = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
-
-    #pressed = st.form_submit_button("マップ更新")
     st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
 ###測定データの処理２
