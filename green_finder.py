@@ -46,7 +46,7 @@ with st.sidebar:
         st.write('アップロードされたファイル:', uploaded_file.name)
         content = uploaded_file.read()
         data_raw = uploaded_file
-    st.dataframe(data_raw[['測定日']])
+    #st.dataframe(data_raw[['測定日']])
     data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
     
     tsusho_choice = data_raw['通称線'].unique()  
@@ -65,7 +65,7 @@ with st.sidebar:
     data_raw['集計キロ程'] = data_raw['キロ程']//interval*interval+int(interval/2)
     data = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
 
-    pressed = st.form_submit_button("マップ更新")
+    #pressed = st.form_submit_button("マップ更新")
     st.info('現在テスト中のため、烏山線、山手貨物線のデータをデフォルトで読み込んでいますが、新たにデータをアップすると、新しいデータに上書きされます。',icon="💡")
 
 ###測定データの処理２
