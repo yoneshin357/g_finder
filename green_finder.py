@@ -233,5 +233,6 @@ with tab4:
         -入力するcsvデータは一切加工していないものを用いてください。\n
     -地図に表示できる（緯度経度と紐づけできる）線名は以下です。入力データとの整合を確認してください。一致する線名が無い場合はエラーとなります。\n
     ''')
-    st.table(pd.DataFrame(kilo['線名'].unique(), columns=['読込可能な線名']))
+    #st.table(pd.DataFrame(kilo['線名'].unique(), columns=['読込可能な線名']))
+    st.table(pd.DataFrame(kilo[['線名コード','線名']].drop_duplicates(), columns=['通称線コード','読込可能な線名']))
 
