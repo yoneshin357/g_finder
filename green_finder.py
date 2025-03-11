@@ -39,7 +39,7 @@ st.set_page_config(page_title="Green Finder",
                    layout="wide", page_icon="🌳",
                    initial_sidebar_state="expanded")
 ###サイドバーの設定
-with st.sidebar.form(key="my_form"):
+with st.sidebar:
     st.write("""## データ読込""")  
     uploaded_file = st.file_uploader('マヤ車測定結果csvをアップロード', type=['csv'])
     if uploaded_file is not None:
