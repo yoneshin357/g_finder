@@ -47,7 +47,7 @@ with st.sidebar:
     if uploaded_file is not None:
         try:
             st.write('アップロードされたファイル:', uploaded_file.name)
-            data_raw = uploaded_file.read()
+            #data_raw = uploaded_file.read()
             data_raw = pd.read_csv(uploaded_file, encoding='shift-jis')
 
         except pd.errors.EmptyDataError:
