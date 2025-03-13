@@ -6,6 +6,7 @@ import pydeck as pdk
 import plotly.express as px
 import geopandas as gpd
 from shapely import wkt
+import chardet
 
 ###関数設定
 #def color_green(val):
@@ -44,11 +45,22 @@ with st.sidebar:
     st.write("""## データ読込""")  
     uploaded_file = st.file_uploader('マヤ車測定結果csvをアップロード', type=['csv'])
     if uploaded_file is not None:
-        st.write('アップロードされたファイル:', uploaded_file.name)
-        content = uploaded_file.read()
-        
-        data_raw = pd.read_csv(uploaded_file, encoding="cp932")
-        #shift_jis
+        try:
+            st.write('アップロードされたファイル:', uploaded_file.name)
+            data_raw = uploaded_file.read()
+            result = chardet.detect(data_raw)
+            encoding = result['encoding']
+            
+            data_raw = pd.read_csv(uploaded_file, encoding="shift_jis")
+            #shift_jis
+
+        except pd.errors.EmptyDataError:
+            st.error("ファイルが空です。別のファイルをアップロードしてください。")
+        except UnicodeDecodeError:
+            st.error(f"ファイルのエンコーディング({encoding})が正しくありません。別のファイルをアップロードしてください。")
+        except Exception as e:
+            st.error(f"エラーが発生しました: {e}")
+            
     #st.dataframe(data_raw[['測定日']])
     data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
     
