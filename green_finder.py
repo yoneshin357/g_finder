@@ -6,7 +6,7 @@ import pydeck as pdk
 import plotly.express as px
 import geopandas as gpd
 from shapely import wkt
-import chardet
+
 
 ###関数設定
 #def color_green(val):
@@ -48,16 +48,12 @@ with st.sidebar:
         try:
             st.write('アップロードされたファイル:', uploaded_file.name)
             data_raw = uploaded_file.read()
-            result = chardet.detect(data_raw)
-            encoding = result['encoding']
-            st.write('エンコード:', encoding)
-            data_raw = pd.read_csv(uploaded_file, encoding=encoding)
-            #shift_jis
+            data_raw = pd.read_csv(uploaded_file, encoding='shift-jis')
 
         except pd.errors.EmptyDataError:
             st.error("ファイルが空です。別のファイルをアップロードしてください。")
         except UnicodeDecodeError:
-            st.error(f"ファイルのエンコーディング({encoding})が正しくありません。別のファイルをアップロードしてください。")
+            st.error("ファイルのエンコーディングが正しくありません。別のファイルをアップロードしてください。")
         except Exception as e:
             st.error(f"エラーが発生しました: {e}")
             
