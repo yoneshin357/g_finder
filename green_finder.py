@@ -50,7 +50,7 @@ with st.sidebar:
             data_raw = uploaded_file.read()
             result = chardet.detect(data_raw)
             encoding = result['encoding']
-            
+            st.write('エンコード:', encoding)
             data_raw = pd.read_csv(uploaded_file, encoding="shift_jis")
             #shift_jis
 
