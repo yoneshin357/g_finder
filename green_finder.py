@@ -46,7 +46,8 @@ with st.sidebar:
         st.write('アップロードされたファイル:', uploaded_file.name)
         content = uploaded_file.read()
         
-        data_raw = pd.read_csv(uploaded_file, encoding="shift_jis")
+        data_raw = pd.read_csv(uploaded_file, encoding="cp932")
+        #shift_jis
     #st.dataframe(data_raw[['測定日']])
     data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
     
