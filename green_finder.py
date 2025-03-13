@@ -51,7 +51,7 @@ with st.sidebar:
             result = chardet.detect(data_raw)
             encoding = result['encoding']
             st.write('エンコード:', encoding)
-            data_raw = pd.read_csv(uploaded_file, encoding="shift_jis")
+            data_raw = pd.read_csv(uploaded_file, encoding="shift_jis", errors="ignore")
             #shift_jis
 
         except pd.errors.EmptyDataError:
