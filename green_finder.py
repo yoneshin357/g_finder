@@ -27,8 +27,10 @@ line = pd.read_csv(path+"tsushosen_line.csv", encoding="shift_jis")
 data_raw = pd.read_csv(path+"sample_karasuyama.csv", encoding="shift_jis")
 #data_raw = pd.read_csv(path+"sample_tohoku.csv", encoding="shift_jis")
 
+
+
 ##junk
-junk = pd.read_excel(path+"junk.xlsx")
+
 
 ###データ下処理
 ##駅データ
@@ -51,7 +53,8 @@ with st.sidebar:
         try:
             st.write('アップロードされたファイル:', uploaded_file.name)
             #data_raw = uploaded_file.read()
-            data_raw = pd.read_csv(uploaded_file, encoding='shift-jis')
+            #data_raw = pd.read_csv(uploaded_file, encoding='shift-jis')
+            data_raw = pd.read_excel(uploaded_file)
 
         except pd.errors.EmptyDataError:
             st.error("ファイルが空です。別のファイルをアップロードしてください。")
