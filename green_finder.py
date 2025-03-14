@@ -48,7 +48,7 @@ st.set_page_config(page_title="Green Finder",
 ###サイドバーの設定
 with st.sidebar:
     st.write("""## データ読込""")  
-    uploaded_file = st.file_uploader('マヤ車測定結果csvをアップロード', type=['csv'])
+    uploaded_file = st.file_uploader('マヤ車測定結果csvをアップロード', type=['xlsx'])
     if uploaded_file is not None:
         try:
             st.write('アップロードされたファイル:', uploaded_file.name)
