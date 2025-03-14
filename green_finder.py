@@ -6,7 +6,7 @@ import pydeck as pdk
 import plotly.express as px
 import geopandas as gpd
 from shapely import wkt
-
+import openpyxl
 
 ###関数設定
 #def color_green(val):
@@ -26,6 +26,9 @@ line = pd.read_csv(path+"tsushosen_line.csv", encoding="shift_jis")
 ##サンプルデータ
 data_raw = pd.read_csv(path+"sample_karasuyama.csv", encoding="shift_jis")
 #data_raw = pd.read_csv(path+"sample_tohoku.csv", encoding="shift_jis")
+
+##junk
+junk = pd.read_excel(path+"junk.xlsx", encoding="shift_jis")
 
 ###データ下処理
 ##駅データ
