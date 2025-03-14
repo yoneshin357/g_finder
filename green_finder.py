@@ -6,7 +6,7 @@ import pydeck as pdk
 import plotly.express as px
 import geopandas as gpd
 from shapely import wkt
-import openpyxl
+
 
 ###関数設定
 #def color_green(val):
