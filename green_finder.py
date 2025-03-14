@@ -28,7 +28,7 @@ data_raw = pd.read_csv(path+"sample_karasuyama.csv", encoding="shift_jis")
 #data_raw = pd.read_csv(path+"sample_tohoku.csv", encoding="shift_jis")
 
 ##junk
-junk = pd.read_excel(path+"junk.xlsx", encoding="shift_jis")
+junk = pd.read_excel(path+"junk.xlsx")
 
 ###データ下処理
 ##駅データ
