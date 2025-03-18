@@ -116,6 +116,8 @@ for position in limit_s_dict.keys():
 st.write("""# 🍃🌳 Green Finder""")    
 st.write('## 表示設定')
 
+st.dataframe(data_raw2)
+
 ###表示項目設定
 col0 = st.columns(5)
 with col0[0]:
