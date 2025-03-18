@@ -71,12 +71,13 @@ def main():
     ### サイドバーの設定
     with st.sidebar:
         st.write("""## データ読込""")  
-        uploaded_file = st.file_uploader('マヤ車測定結果csvをアップロード', type=['csv'])
+        uploaded_file = st.file_uploader('マヤ車測定結果Excelをアップロード', type=['xlsx'])
         if uploaded_file is not None:
             st.write('アップロードされたファイル:', uploaded_file.name)
             # content = uploaded_file.read()    # 使用していなかったためコメントアウト
             # data_raw = uploaded_file
-            data_raw = pd.read_csv(uploaded_file, encoding="shift_jis")
+            #data_raw = pd.read_csv(uploaded_file, encoding="shift_jis")
+            data_raw = pd.read_excel(uploaded_file, engine='openpyxl')
         else:
             ## サンプルデータ
             data_raw = pd.read_csv(path + "sample_karasuyama.csv", encoding="shift_jis")    # uploaded_file がある場合、2回読み込まれてしまうため変更
@@ -98,7 +99,8 @@ def main():
         interval = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
         data_raw['集計キロ程'] = data_raw['キロ程']//interval*interval+int(interval/2)
         
-        data_raw2 = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
+        #data_raw2 = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
+        data_raw2 = pd.merge_asof(data_raw,kilo[['線名', 'キロ程', '経度', '緯度', '箇所名']].drop_duplicates(subset=['線名', 'キロ程']),left_on='集計キロ程', right_on='キロ程',by='通称線',  direction='nearest')    
         
         st.write('保技セエリア')
         options_kasho = data_raw2[(data_raw2['通称線']==selectbox_senku)&(data_raw2['走行方向']==selectbox_direction)]['箇所名'].unique()
