@@ -99,7 +99,7 @@ def main():
 
         if interval % 200 == 100:
             kilo['キロ程'] = kilo['キロ程'] + 50
-        data_raw['集計キロ程'] = data_raw['キロ程']//interval*interval+int(interval/2)
+        data_raw['集計キロ程'] = data_raw['キロ程'].astype(int)//interval*interval+int(interval/2)
         
         data_raw2 = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
         
