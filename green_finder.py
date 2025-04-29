@@ -7,7 +7,7 @@ from shapely import wkt
 import time
 from functools import wraps
 from typing import Callable, Any
-
+#コメント適当追加
 # 環境設定
 ### Streamlitの初期設定
 st.set_page_config(page_title="Green Finder", 
