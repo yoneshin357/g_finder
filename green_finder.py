@@ -48,8 +48,7 @@ def rail_load():
     sta = pd.read_csv(path + "station_lonlat_jre.csv", encoding="shift_jis")
     ## 路線データ
     line = pd.read_csv(path + "tsushosen_line.csv", encoding="shift_jis")    # uploaded_file がある場合、2回読み込まれてしまうため変更
-    ## サンプルデータ
-    # data_raw = pd.read_csv(path + "sample_karasuyama.csv", encoding="shift_jis")    # uploaded_file がある場合、2回読み込まれてしまうため変更
+
     
     ### データ下処理
     ## 駅データ
@@ -68,6 +67,10 @@ def main():
     # 線路条件をCSVから読み込む
     kilo, sta, line_gdf = rail_load()
     
+    # タイトル表示
+    top_view = st.container()
+    top_view.write("""# 🍃🌳 Green Finder - Beta""")   
+    
     ### サイドバーの設定
     with st.sidebar:
         st.write("""## データ読込""")  
@@ -80,7 +83,10 @@ def main():
             data_raw = pd.read_excel(uploaded_file, engine='openpyxl')
         else:
             ## サンプルデータ
-            data_raw = pd.read_csv(path + "sample_karasuyama.csv", encoding="shift_jis")    # uploaded_file がある場合、2回読み込まれてしまうため変更
+            data_raw = pd.read_csv(path + "sample_empty.csv", encoding="shift_jis")    # uploaded_file がある場合、2回読み込まれてしまうため変更
+            top_view.info('👈サイドバーからデータをアップロードしてください。')
+            #return
+            
         # st.dataframe(data_raw[['測定日']])
         data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
         
@@ -99,7 +105,7 @@ def main():
 
         if interval % 200 == 100:
             kilo['キロ程'] = kilo['キロ程'] + 50
-        data_raw['集計キロ程'] = data_raw['キロ程'].astype(int)//interval*interval+int(interval/2)
+        data_raw['集計キロ程'] = data_raw['キロ程']//interval*interval+int(interval/2)
         
         data_raw2 = data_raw.merge(kilo[['線名','キロ程','経度','緯度','箇所名']].drop_duplicates(subset=['線名','キロ程']),left_on=['集計キロ程','通称線'],right_on=['キロ程','線名'])
         
@@ -123,7 +129,7 @@ def main():
     ## 車両限界判定閾値（部位別閾値）
     limit_s_dict = { "側方上部": 400,"側方上部(窓部)": 200,"下部": 50, "側方下部": 50,"上部": 200}
     data['lim_s'] = data['支障位置'].map(limit_s_dict)
-    data['車両限界判定']=0
+    data['車両限界判定'] =0
     data['車両限界判定'] = (data['支障量'] >= data['lim_s']).astype(int)
 
     for position in limit_s_dict.keys():
@@ -131,7 +137,6 @@ def main():
         data[f'車両限界判定_{position}'] = ((data['車両限界判定'] == 1) & (data['支障位置'] == position)).astype(int)
 
     ### メインページ
-    st.write("""# 🍃🌳 Green Finder""")    
     st.write('## 表示設定')
     
     ### 表示項目設定
@@ -261,8 +266,9 @@ def main():
         ''')
         st.write("""## 🌳 注意点""")
         st.markdown('''
-            -入力するcsvデータは一切加工していないものを用いてください。\n
-        -地図に表示できる（緯度経度と紐づけできる）線名は以下です。入力データとの整合を確認してください。一致する線名が無い場合はエラーとなります。\n
+            -入力するcsvデータは加工（セル結合、列追加削除等）していないものを用いてください。\n
+            -入力データの「キロ程」に数値以外が混ざっていないことを確認してください。（カンマ、ピリオド、英字等があれば削除）\
+            -地図に表示できる（緯度経度と紐づけできる）線名は以下です。入力データとの整合を確認してください。一致する線名が無い場合はエラーとなります。\n
         ''')
         # st.table(pd.DataFrame(kilo['線名'].unique(), columns=['読込可能な線名']))
         st.markdown(kilo[['線名コード','線名']].drop_duplicates(subset='線名コード').style.hide(axis="index").to_html(), unsafe_allow_html=True)
