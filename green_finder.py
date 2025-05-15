@@ -17,7 +17,7 @@ st.set_page_config(page_title="Green Finder",
 ### 起点となるパス設定
 # ローカルの場合: ""　コンテナの場合: "src/"
 path = 'src/'
-path = ''
+# path = ''
 
 # デバッグモード設定（本番環境ではFalseに設定）
 DEBUG_MODE = False
@@ -101,7 +101,7 @@ def main():
         # pressed = st.form_submit_button("マップ更新")
     
 
-        interval = st.number_input("集計間隔[m]", value=200, min_value=100, max_value=2000, step=100, format="%i")
+        interval = st.number_input("集計間隔[m]", value=200, min_value=10, max_value=2000, step=10, format="%i")
 
         if interval % 200 == 100:
             kilo['キロ程'] = kilo['キロ程'] + 50
