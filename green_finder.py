@@ -90,7 +90,12 @@ def main():
         # st.dataframe(data_raw[['測定日']])
         data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
         
-        tsusho_choice = data_raw['通称線'].unique()  
+        tsusho_choice = data_raw['通称線'].unique() 
+        junk = data_raw[["支社","通称線","走行方向"]].drop_duplicates()
+        junk['表示'] = False
+        junkbox = st.data_editor(junk)
+        st.write(junkbox[junkbox['表示'] == True])
+      
         selectbox_senku = st.selectbox("線名", tsusho_choice)
     
         if selectbox_senku not in kilo['線名'].unique():
