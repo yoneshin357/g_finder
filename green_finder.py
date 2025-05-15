@@ -94,7 +94,10 @@ def main():
         junk = data_raw[["通称線","走行方向"]].drop_duplicates()
         junk['表示'] = False
         junkbox = st.data_editor(junk)
-        st.write(junkbox[junkbox['表示'] == True].values)
+        
+        selected_pairs = junkbox[junkbox['表示'] == True][['通称線', '走行方向']]
+
+        st.write(selected_pairs)
       
         selectbox_senku = st.selectbox("線名", tsusho_choice)
     
@@ -122,7 +125,15 @@ def main():
 
     ### 測定データの処理２
     data = data_raw2[(data_raw2['通称線']==selectbox_senku)&(data_raw2['走行方向']==selectbox_direction)&(data_raw2['箇所名'].isin(selectbox_kasho))&(data_raw2['ビデオ確認による対象物'].isin(['草木']))]
-    
+
+
+    filtered_data = data_raw2.merge(selected_pairs, on=['通称線', '走行方向'])
+    data = filtered_data[
+        (filtered_data['箇所名'].isin(selectbox_kasho)) &
+        (filtered_data['ビデオ確認による対象物'] == '草木')
+    ]
+
+  
     # obj_choice =data['ビデオ確認による対象物'].unique()
     # keito_choice =data['支障物確認を行う担当分野'].unique()
     # LR_choice = data['位置'].unique()
