@@ -17,7 +17,7 @@ st.set_page_config(page_title="Green Finder",
 ### 起点となるパス設定
 # ローカルの場合: ""　コンテナの場合: "src/"
 path = 'src/'
-# path = ''
+path = ''
 
 # デバッグモード設定（本番環境ではFalseに設定）
 DEBUG_MODE = False
