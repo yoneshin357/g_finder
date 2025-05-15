@@ -81,29 +81,38 @@ def main():
             # data_raw = uploaded_file
             #data_raw = pd.read_csv(uploaded_file, encoding="shift_jis")
             data_raw = pd.read_excel(uploaded_file, engine='openpyxl')
+            data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
+
+            tsusho_choice = data_raw['通称線'].unique() 
+            junk = data_raw[["通称線","走行方向"]].drop_duplicates()
+            junk['表示'] = False
+            junkbox = st.data_editor(junk)
+            st.write(junkbox[junkbox['表示'] == True])
+            
+            selectbox_senku = st.selectbox("線名", tsusho_choice)
+            
+            if selectbox_senku not in kilo['線名'].unique():
+                st.warning('選択した線名に該当する座標データがありません。「使用手順と注意」を参照してください。',icon="🔥")
+            
+            dir_choice = data_raw[(data_raw['通称線']==selectbox_senku)]['走行方向'].unique()
+            selectbox_direction = st.selectbox("走行方向", dir_choice)
+            # pressed = st.form_submit_button("マップ更新")
+
+
+      
+            
         else:
             ## サンプルデータ
             data_raw = pd.read_csv(path + "sample_empty.csv", encoding="shift_jis")    # uploaded_file がある場合、2回読み込まれてしまうため変更
             top_view.info('👈サイドバーからデータをアップロードしてください。')
+
+            data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
             #return
             
-        # st.dataframe(data_raw[['測定日']])
-        data_raw['date'] = pd.to_datetime(data_raw['測定日']).dt.date
+
         
-        tsusho_choice = data_raw['通称線'].unique() 
-        junk = data_raw[["通称線","走行方向"]].drop_duplicates()
-        junk['表示'] = False
-        junkbox = st.data_editor(junk)
-        st.write(junkbox[junkbox['表示'] == True])
-      
-        selectbox_senku = st.selectbox("線名", tsusho_choice)
-    
-        if selectbox_senku not in kilo['線名'].unique():
-            st.warning('選択した線名に該当する座標データがありません。「使用手順と注意」を参照してください。',icon="🔥")
         
-        dir_choice = data_raw[(data_raw['通称線']==selectbox_senku)]['走行方向'].unique()
-        selectbox_direction = st.selectbox("走行方向", dir_choice)
-        # pressed = st.form_submit_button("マップ更新")
+
     
 
         interval = st.number_input("集計間隔[m]", value=200, min_value=10, max_value=2000, step=10, format="%i")
