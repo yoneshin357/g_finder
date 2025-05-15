@@ -128,10 +128,7 @@ def main():
 
 
     filtered_data = data_raw2.merge(selected_pairs, on=['通称線', '走行方向'])
-    data = filtered_data[
-        (filtered_data['箇所名'].isin(selectbox_kasho)) &
-        (filtered_data['ビデオ確認による対象物'] == '草木')
-    ]
+    data = filtered_data[(filtered_data['箇所名'].isin(selectbox_kasho)) &(filtered_data['ビデオ確認による対象物'] == '草木')]
 
   
     # obj_choice =data['ビデオ確認による対象物'].unique()
